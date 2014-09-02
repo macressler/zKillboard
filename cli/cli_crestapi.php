@@ -97,10 +97,6 @@ class cli_crestapi implements cliCommand
 					// Share with zKillboard
 					if ($baseAddr != "zkillboard.com") file_get_contents("https://zkillboard.com/crestmail/$killID/$hash/");
 
-					// Write this file to eve-kill's parse directory
-					$xml = Util::xmlOut(array($killmail), array());
-					Util::sendToEveKill("0_0_$killID.xml", $xml);
-
 					if ($c > 0) $count++;
 					$diff = $timer->stop() - $now;
 					if ($diff < 100)

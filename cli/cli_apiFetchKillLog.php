@@ -86,7 +86,6 @@ class cli_apiFetchKillLog implements cliCommand
 				if ($firstIteration && sizeof($result->kills) == 0) $db->execute("update zz_api_characters set lastChecked = now(), errorCount = 0, errorCode = 0, cachedUntil = date_add(:cachedUntil, interval 2 hour) where apiRowID = :id", array(":id" => $apiRowID, ":cachedUntil" => $cachedUntil));
 				else $db->execute("update zz_api_characters set lastChecked = now(), cachedUntil = :cachedUntil, errorCount = 0, errorCode = 0 where apiRowID = :id", array(":id" => $apiRowID, ":cachedUntil" => $cachedUntil));
 
-				if ($aff > 0) Util::sendToEveKill("{$keyID}_{$charID}_$beforeKillID.xml", $pheal->xml);
 				$firstIteration = false;
 			} while ($aff > 24 || ($beforeKillID > 0 && $maxKillID == 0));
 		} catch (Exception $ex) {
