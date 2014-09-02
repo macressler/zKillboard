@@ -48,7 +48,7 @@ class cli_updateCharacters implements cliCommand
 		$timer = new Timer();
 		while ($timer->stop() < 65000) 
 		{
-			$result = $db->query("select characterID, name from zz_characters where lastUpdated < date_sub(now(), interval 7 day) order by lastUpdated limit 100", array(), 0);
+			$result = $db->query("select characterID, name, corporationID, allianceID from zz_characters where lastUpdated < date_sub(now(), interval 7 day) order by lastUpdated limit 100", array(), 0);
 			foreach ($result as $row)
 			{
 				if (Util::isMaintenanceMode()) return;
@@ -76,7 +76,11 @@ class cli_updateCharacters implements cliCommand
 					$name = $charInfo->characterName;
 					$corpID = $charInfo->corporationID;
 					$alliID = $charInfo->allianceID;
-					if ($name != "") $db->execute("update zz_characters set name = :name, corporationID = :corpID, allianceID = :alliID where characterID = :id", array(":id" => $id, ":name" => $name, ":corpID" => $corpID, ":alliID" => $alliID));
+
+					if ($name != $row["name"] || ((int) $corpID) != $row["corporationID"] || ((int) $alliID) != $row["allianceID"])
+					{
+						$db->execute("update zz_characters set name = :name, corporationID = :corpID, allianceID = :alliID where characterID = :id", array(":id" => $id, ":name" => $name, ":corpID" => $corpID, ":alliID" => $alliID));
+					}
 				}
 				catch (Exception $ex)
 				{
