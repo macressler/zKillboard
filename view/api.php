@@ -59,7 +59,7 @@ header("Access-Control-Allow-Methods: GET");
 if(isset($parameters["xml"]))
 {
 	$app->contentType("text/xml; charset=utf-8");
-	echo Util::xmlOut($array, $parameters);
+	echo XmlWrapper::xmlOut($array, $parameters);
 }
 elseif(isset($_GET["callback"]) && Util::isValidCallback($_GET["callback"]) )
 {
