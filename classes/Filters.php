@@ -134,15 +134,15 @@ class Filters
 			$killID = (int)$parameters["beforeKillID"];
 			$tables[] = "zz_participants p";
 			$whereClauses[] = "p.killID < $killID";
-			$killdttm = Db::queryField("select dttm from zz_participants where killID = :killID limit 1", "dttm", array(":killID" => $killID));
-			$whereClauses[] = "p.dttm <= '$killdttm'";
+			//$killdttm = Db::queryField("select dttm from zz_participants where killID = :killID limit 1", "dttm", array(":killID" => $killID));
+			//$whereClauses[] = "p.dttm <= '$killdttm'";
 		}
 		if (array_key_exists("afterKillID", $parameters)) {
 			$killID = (int)$parameters["afterKillID"];
 			$tables[] = "zz_participants p";
 			$whereClauses[] = "p.killID > $killID";
-			$killdttm = Db::queryField("select dttm from zz_participants where killID = :killID limit 1", "dttm", array(":killID" => $killID));
-			$whereClauses[] = "p.dttm >= '$killdttm'";
+			//$killdttm = Db::queryField("select dttm from zz_participants where killID = :killID limit 1", "dttm", array(":killID" => $killID));
+			//$whereClauses[] = "p.dttm >= '$killdttm'";
 		}
 		if (array_key_exists("war", $parameters) || array_key_exists("warID", $parameters)) {
 			$warID = isset($parameters["war"]) ? (int)$parameters["war"] : (int)$parameters["warID"];
