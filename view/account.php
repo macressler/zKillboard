@@ -191,7 +191,7 @@ if($_POST)
 		$banner = Util::getPost("banner");
 		$alias = Util::getPost("alias");
 		$bannerUpdates = array("$subdomain" => $banner);
-		if (strlen($alias) >= 6 && strlen($alias) <= 64) $aliasUpdates = array("$subdomain" => $alias);
+		if (strlen($alias) == 0 || (strlen($alias) >= 6 && strlen($alias) <= 64)) $aliasUpdates = array("$subdomain" => $alias);
 		// table is updated if user is ceo/executor in code thta loads this information below
 	}
 }
@@ -246,7 +246,7 @@ foreach ($domainChars as $domainChar) {
 			$alias = $aliasUpdates[$subdomain];
 			// Make sure no one else has the alias
 			$count = Db::queryField("select count(*) count from zz_subdomains where alias = :alias and subdomain != :subdomain", "count", array(":subdomain" => $subdomain, ":alias" => $alias));
-			if ($count == 0)
+			if ($count == 0 || strlen($alias) == 0)
 			{			
 				Db::execute("insert into zz_subdomains (subdomain, alias) values (:subdomain, :alias) on duplicate key update alias = :alias", array(":subdomain" => $subdomain, ":alias" => $alias));
 				$error = "$subdomain has been updated, please wait up to 2 minutes for the changes to take effect.";
