@@ -143,3 +143,6 @@ $parseAscending = true;
 
 # Fetch all war killmails
 $fetchWars = false;
+
+# Listen for all kills?
+$killmailFirehose = false;

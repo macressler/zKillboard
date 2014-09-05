@@ -35,7 +35,10 @@ class cli_stompReceive implements cliCommand
 
 	public function execute($parameters, $db)
 	{
-		global $stompServer, $stompUser, $stompPassword, $baseAddr, $debug;
+		global $stompServer, $stompUser, $stompPassword, $baseAddr, $debug, $killmailFirehose;
+
+		// Listen for all kills?
+		if ($killmailFirehose != true) return;
 
 		// Ensure the class exists
 		if (!class_exists("Stomp")) {
