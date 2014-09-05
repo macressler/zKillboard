@@ -34,7 +34,7 @@ if(User::isLoggedIn())
 $cachepath = "cache/templates/" . $theme;
 $view = $app->view();
 $view->parserOptions = array(
-    "debug" => $debug,
+    "debug" => true,
     "cache" => $cachepath
 );
 
