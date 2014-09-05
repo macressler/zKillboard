@@ -19,6 +19,7 @@
 $page = 1;
 $pageTitle = "";
 $pageType = "index";
+$requestUriPager = "";
 $serverName = $_SERVER["SERVER_NAME"];
 global $baseAddr, $fullAddr;
 if ($serverName != $baseAddr) {
@@ -44,6 +45,8 @@ if ($serverName != $baseAddr) {
 	$top[] = ($columnName != "corporationID" && $columnName != "allianceID" ? Info::doMakeCommon("Top Alliances", "allianceID", Stats::getTopAllis($p)) : array());
 	$top[] = Info::doMakeCommon("Top Ships", "shipTypeID", Stats::getTopShips($p));
 	$top[] = Info::doMakeCommon("Top Systems", "solarSystemID", Stats::getTopSystems($p));
+
+	$requestUriPager = str_replace("ID", "", $columnName) . "/$id/";
 
 	$p["limit"] = 5;
 	$topIsk = Stats::getTopIsk($p);
@@ -85,4 +88,4 @@ if ($serverName != $baseAddr) {
 	$kills = Kills::getKills(array("limit" => $killsLimit));
 }
 
-$app->render("index.html", array("topPods" => $topPods, "topIsk" => $topIsk, "topPoints" => $topPoints, "topKillers" => $top, "kills" => $kills, "page" => $page, "pageType" => $pageType, "pager" => true, "pageTitle" => $pageTitle));
+$app->render("index.html", array("topPods" => $topPods, "topIsk" => $topIsk, "topPoints" => $topPoints, "topKillers" => $top, "kills" => $kills, "page" => $page, "pageType" => $pageType, "pager" => true, "pageTitle" => $pageTitle, "requestUriPager" => $requestUriPager));
