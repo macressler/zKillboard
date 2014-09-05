@@ -192,18 +192,9 @@ class Api
 		$demoteCharacter = false;
 		$cacheUntil = 0;
 		switch ($code) {
-			case 904:
-				$msg = "Error 904 detected using key $keyID";
-				Log::log($msg);
-				//$msg = "|r|$msg";
-				//$lastTime = Storage::retrieve("Last904Time", 0);
-				//$time = time();
-				//Storage::store("Last904Time", $time);
-				// Only announce 904's every 5 minutes
-				//if ($lastTime > ($time - 300)) {
-				//	Log::irc($msg);
-				//	Log::ircAdmin($msg);
-				//}
+                        case 28: // Timeouts
+                        case 904: // temp ban from ccp's api server
+                                $db->execute("replace into zz_storage values ('ApiStop904', date_add(now(), interval 5 minute))");
 				break;
 			case 403:
 			case 502:

@@ -92,6 +92,10 @@ class cli_apiFetchKillLog implements cliCommand
 			$errorCode = $ex->getCode();
 			$db->execute("update zz_api_characters set cachedUntil = date_add(now(), interval 1 hour), errorCount = errorCount + 1, errorCode = :code where apiRowID = :id", array(":id" => $apiRowID, ":code" => $errorCode));
 			switch($errorCode) {
+				case 28: // Timeouts
+				case 904: // temp ban from ccp's api server
+					$db->execute("replace into zz_storage values ('ApiStop904', date_add(now(), interval 5 minute))");
+					break;
 				case 119:
 				case 120:
 					// Don't log it
