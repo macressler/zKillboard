@@ -28,12 +28,17 @@ class cli_itemUpdate implements cliCommand
 		return ""; // Space seperated list
 	}
 
+        public function getCronInfo()
+        {
+                return array(604800 => ""); // Every 7 days
+        }
+
 	public function execute($parameters, $db)
 	{
 		$rows = $db->query("select typeID from ccp_invTypes order by typeID", array(), 0);
 		$ids = array();
 		foreach($rows as $row) {
-			$ids[] = $row['typeID'];
+			if ($row["typeID"] > 0) $ids[] = $row["typeID"];
 		}
 
 		$size = sizeof($ids);
@@ -56,7 +61,7 @@ class cli_itemUpdate implements cliCommand
 
 		foreach ($buckets as $bucket) {
 			$exploded = implode(",", $bucket);
-			$url = trim("http://api.eveonline.com/eve/typeName.xml.aspx?ids=$exploded");
+			$url = trim("https://api.eveonline.com/eve/typeName.xml.aspx?ids=$exploded");
 			$raw = file_get_contents($url);
 			try {
 				$xml = new SimpleXmlElement($raw, null, false, "", false);
