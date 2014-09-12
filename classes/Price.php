@@ -131,6 +131,9 @@ class Price
 			static::setPrice($typeID, 100000000000); // 100b
 		}
 
+		// We don't need daily prices on the following ships...
+		Db::execute("delete from zz_item_price_lookup where typeID in (2834, 3516, 11375, 33397, 32788, 2836, 3518, 32790, 33395, 32209, 33673, 33675, 11940, 11942, 635, 11011, 25560, 13202, 26840, 11936, 11938, 26842)");
+
 		$tourneyFrigates = array(
 				2834, // Utu
 				3516, // Malice
@@ -154,7 +157,7 @@ class Price
 				11940, // Gold Magnate
 				11942, // Silver Magnate
 				635, // Opux Luxury Yacht
-				110111, // Guardian-Vexor
+				11011, // Guardian-Vexor
 				25560, // Opux Dragoon Yacht
 				);
 		foreach($rareCruisers as $typeID) static::setPrice($typeID, 500000000000); // 500b
