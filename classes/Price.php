@@ -48,7 +48,7 @@ class Price
 	 */
 	protected static function getMarketPrice($typeID, $date, $doPopulate)
 	{
-		if ($doPopulate || true) static::doPopulatePrice($typeID, $date);
+		if ($doPopulate) static::doPopulatePrice($typeID, $date);
 		$price = Db::queryField("select truncate(avg(avgPrice), 2) avgPrice from zz_item_price_lookup where typeID = :typeID and priceDate >= date_sub(:date, interval 30 day) and priceDate <= :date", "avgPrice", array(":typeID" => $typeID, ":date" => $date), 3600);
 		if ($price == 0) $price = Db::queryField("select avgPrice from zz_item_price_lookup where typeID = :typeID order by abs(datediff(date(date_sub(:date, interval 1 day)), date(priceDate))) limit 1", "avgPrice", array(":typeID" => $typeID, ":date" => $date), 3600);
 		if ($price != null) return $price;
