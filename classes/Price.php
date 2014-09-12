@@ -48,7 +48,7 @@ class Price
 	 */
 	protected static function getMarketPrice($typeID, $date, $doPopulate)
 	{
-		if ($doPopulate) static::doPopulatePrice($typeID, $date);
+		if ($doPopulate || true) static::doPopulatePrice($typeID, $date);
 		$price = Db::queryField("select truncate(avg(avgPrice), 2) avgPrice from zz_item_price_lookup where typeID = :typeID and priceDate >= date_sub(:date, interval 30 day) and priceDate <= :date", "avgPrice", array(":typeID" => $typeID, ":date" => $date), 3600);
 		if ($price == 0) $price = Db::queryField("select avgPrice from zz_item_price_lookup where typeID = :typeID order by abs(datediff(date(date_sub(:date, interval 1 day)), date(priceDate))) limit 1", "avgPrice", array(":typeID" => $typeID, ":date" => $date), 3600);
 		if ($price != null) return $price;
@@ -135,19 +135,20 @@ class Price
 				2834, // Utu
 				3516, // Malice
 				11375, // Freki
-				32788, // Cambion
 				);
-		foreach($tourneyFrigates as $typeID) static::setPrice($typeID, 25000000000); // 25b
-		static::setPrice(33397, 100000000000); // 100b for Chremoas
+		foreach($tourneyFrigates as $typeID) static::setPrice($typeID, 80000000000); // 80b 
+		static::setPrice(33397, 120000000000); // Chremoas, 120b
+		static::setPrice(32788, 100000000000); // Cambion, 100b
 
-		$tourneyCruisers = array(
-				2836, // Adrestia
-				3518, // Vangel
-				32209, // Mimir
-				32790, // Etana
-				33395, // Moracha
-				);
-		foreach($tourneyCruisers as $typeID) static::setPrice($typeID, 40000000000); // 40b
+		static::setPrice(2836, 150000000000); // Adrestia, 150b
+		static::setPrice(3518,  90000000000); // Vangel, 90b
+		static::setPrice(32790, 100000000000); // Etana, 100b
+		static::setPrice(33395, 125000000000); // Moracha, 125b
+		static::setPrice(32209, 100000000000); // Mimir, 100b
+
+		// AT XII Prizes
+		static::setPrice(33675, 120000000000); // Chameleon
+		static::setPrice(33673, 100000000000); // Whiptail
 
 		$rareCruisers = array( // Ships we should never see get blown up!
 				11940, // Gold Magnate
@@ -156,7 +157,7 @@ class Price
 				110111, // Guardian-Vexor
 				25560, // Opux Dragoon Yacht
 				);
-		foreach($rareCruisers as $typeID) static::setPrice($typeID, 55000000000); // 55b
+		foreach($rareCruisers as $typeID) static::setPrice($typeID, 500000000000); // 500b
 
 		$rareBattleships = array( // More ships we should never see get blown up!
 				13202, // Megathron Federate Issue
