@@ -67,6 +67,8 @@ class cli_updateCharacters implements cliCommand
 				if ($id >= 2100000000 && $id < 2199999999) continue; // Dust Characters
 				if ($id >= 30000000 && $id <= 31004590) continue; // NPC's
 				if ($id >= 40000000 && $id <= 41004590) continue; // NPC's
+				$isTypeID = (0 < $db::queryField("select count(*) count from ccp_invTypes where typeID = :id", "count", array(":id" => $id)));
+				if ($isTypeID) continue;
 
 				$pheal = Util::getPheal();
 				$pheal->scope = "eve";
