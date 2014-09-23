@@ -35,17 +35,22 @@ class cli_crestHashGenerate implements cliCommand
 
 	public function execute($parameters, $db)
 	{
-		$count = Db::queryField("select count(*) count from zz_crest_killmail where processed = 0", "count", array(), 0);
-		if ($count > 10000) return;
 		$timer = new Timer();
-		while ($timer->stop() < 59000)
+		while ($timer->stop() <= 65000)
 		{
-			$kills = $db::query("select k.killID from zz_killmails k left join zz_crest_killmail c on (k.killID = c.killID) where k.processed > 0 and k.killID > 0 and c.killID is null order by k.killID limit 1000", array(), 0);
+			$kills = $db::query("select * from zz_crest_queue limit 1000", array(), 0);
+			if (sizeof($kills) == 0)
+			{
+				sleep(3);
+				continue;
+			}
 			foreach($kills as $row)
 			{
+				if ($timer->stop() > 65000) return;
 				$killID = $row["killID"];
 				$hash = Killmail::getCrestHash($killID);
 				$db::execute("insert ignore into zz_crest_killmail (killID, hash) values (:killID, :hash)", array(":killID" => $killID, ":hash" => $hash));
+				$db::execute("delete from zz_crest_queue where killID = :killID", array(":killID" => $killID));
 			}
 		}
 	}

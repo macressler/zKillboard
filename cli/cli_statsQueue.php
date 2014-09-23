@@ -64,6 +64,7 @@ class cli_statsQueue implements cliCommand
 					$db->execute("update zz_killmails set kill_json = :raw where killID = :killID", array(":killID" => $killID, ":raw" => $raw));
 				}
 				$db->execute("delete from zz_stats_queue where killID = :killID", array(":killID" => $killID));
+				$db->execute("insert ignore into zz_crest_queue values (:killID)", array(":killID" => $killID));
 				Social::beSocial($killID);
 				if (class_exists("Stomp")) StompUtil::sendKill($killID);
 			}
