@@ -30,9 +30,7 @@ class cli_populateCharacters implements cliCommand
 
 	public function getCronInfo()
 	{
-		return array(
-			60 => ""
-		);
+		return array(0 => "");
 	}
 
 	public function execute($parameters, $db)
@@ -53,12 +51,11 @@ class cli_populateCharacters implements cliCommand
 		$apiCount = $db->queryField("select count(*) count from zz_api where errorCode not in (203, 220, 222) and lastValidation <= date_add(now(), interval 1 minute)", "count", array(), 0);
 		if ($apiCount == 0) return;
 
-		$fetchesPerSecond = 25;
+		$fetchesPerSecond = 10;
 		$iterationCount = 0;
 
 		while ($timer->stop() < $maxTime) {
-			$keyIDs = $db->query("select distinct keyID from zz_api where errorCode not in (203, 220, 222) and lastValidation < date_sub(now(), interval 2 hour)
-					order by lastValidation, dateAdded desc limit 100", array(), 0);
+			$keyIDs = $db->query("select distinct keyID from zz_api where errorCode not in (203, 220, 222) and lastValidation < date_sub(now(), interval 2 hour) order by lastValidation, dateAdded desc limit 100", array(), 0);
 
 			foreach($keyIDs as $row) {
 				if (Util::isMaintenanceMode()) return;
