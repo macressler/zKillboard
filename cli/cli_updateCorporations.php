@@ -28,7 +28,7 @@ class cli_updateCorporations implements cliCommand
 		return "";
 	}
 
-	public function ggetCronInfo()
+	public function getCronInfo()
 	{
 		return array(0 => "");
 	}
