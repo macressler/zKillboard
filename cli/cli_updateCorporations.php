@@ -55,7 +55,6 @@ class cli_updateCorporations implements cliCommand
 				$db->execute("delete from zz_corporations where corporationID = :id", array(":id" => $id));
 				continue;
 			}
-print_r($row);
 
 			$pheal = Util::getPheal();
 			$pheal->scope = "corp";
