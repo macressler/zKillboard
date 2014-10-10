@@ -51,7 +51,7 @@
         {% endif %}
 	<tr>
 		<th>System:</th>
-		<td>{% include 'components/text_system.html' %} <span>(<span style="color: {{ field.systemColorCode }}">{{ "%1.1f"|format(field.solarSystemSecurity) }}</span>)</span></td>
+		<td>{% include 'components/text_system.html' %} <span>(<span style="color: {{ field.systemColorCode }}">{{ "%1.1f"|format(field.solarSystemSecurity) }}</span>)</span> / {% include 'components/text_region.html' %}</td>
 	</tr>
 	<tr>
 		<th>Time:</th>
