@@ -296,6 +296,13 @@ class Api
 
 		Db::execute("delete from zz_api_characters where isDirector = ''"); // Minor cleanup
 		$fetchesPerSecond = (int) Storage::retrieve("APIFetchesPerSecond", 30);
+		$maxModulus = Db::queryField("select max(modulus) maxModulus from zz_api_characters", "maxModulus", array(), 0);
+		// If the fetchesPerSecond has changed we need to update the modulus on all rows to make sure everyone gets a turn
+		if (($maxModulus + 1) != $fetchesPerSecond)
+		{
+			Log::log("Updating modulus in zz_api_characters table...");
+			Db::execute("update zz_api_characters set modulus = null");
+		}
 		Db::execute("update zz_api_characters set modulus = (apiRowID % :modulus) where modulus is null", array(":modulus" => $fetchesPerSecond));
 
 		for ($i = 0; $i < $fetchesPerSecond; $i++)

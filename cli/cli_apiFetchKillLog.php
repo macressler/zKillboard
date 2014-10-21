@@ -34,15 +34,18 @@ class cli_apiFetchKillLog implements cliCommand
 		$modulus = (int) $parameters[1];
 		if (Util::isMaintenanceMode()) return;
 		$timer = new Timer();
+		$highKillID = Db::query("select max(killID) highKillID from zz_killmails", "highKillID", array(), 0);
+		$activeKillID = $highKillID - 1000000;
 		while ($timer->stop() < 65000)
 		{
-			$apiRowID = Db::queryField("select apiRowID from zz_api_characters where modulus = :mod and errorCode = 0 and cachedUntil < now() order by lastChecked limit 1", "apiRowID", array(":mod" => $mod), 0);
-			if ($apiRowID == null) return;
+			$apiRowID = Db::queryField("select apiRowID from zz_api_characters where modulus = :mod and ((maxKillID >= $activeKillID and cachedUntil < now()) or lastChecked < date_sub(now(), interval 24 hour)) order by lastChecked limit 1", "apiRowID", array(":mod" => $mod), 0);
+			if ($apiRowID === null) return;
 
 			$notRecentKillID = Storage::retrieve("notRecentKillID", 0);
 			$apiRow = $db->queryRow("select * from zz_api_characters where apiRowID = :id", array(":id" => $apiRowID), 0);
 			$maxKillID = $apiRow["maxKillID"];
 			$beforeKillID = 0;
+			$newMax = $maxKillID;
 
 			if (!$apiRow) CLI::out("|r|No such apiRowID: $apiRowID", true);
 
@@ -88,15 +91,16 @@ class cli_apiFetchKillLog implements cliCommand
 						$killID = $kill->killID;
 						if ($beforeKillID == 0) $beforeKillID = $killID;
 						else $beforeKillID = min($beforeKillID, $killID);
+						$newMax = max($newMax, $killID);
 					}
 					if ($firstIteration && sizeof($result->kills) == 0) $db->execute("update zz_api_characters set lastChecked = now(), errorCount = 0, errorCode = 0, cachedUntil = date_add(:cachedUntil, interval 2 hour) where apiRowID = :id", array(":id" => $apiRowID, ":cachedUntil" => $cachedUntil));
-					else $db->execute("update zz_api_characters set lastChecked = now(), cachedUntil = :cachedUntil, errorCount = 0, errorCode = 0 where apiRowID = :id", array(":id" => $apiRowID, ":cachedUntil" => $cachedUntil));
+					else $db->execute("update zz_api_characters set lastChecked = now(), cachedUntil = :cachedUntil, errorCount = 0, errorCode = 0, maxKillID = :maxKillID where apiRowID = :id", array(":id" => $apiRowID, ":cachedUntil" => $cachedUntil, ":maxKillID" => $newMax));
 
 					$firstIteration = false;
 				} while ($aff > 24 || ($beforeKillID > 0 && $maxKillID == 0));
 			} catch (Exception $ex) {
 				$errorCode = $ex->getCode();
-				$db->execute("update zz_api_characters set cachedUntil = date_add(now(), interval 1 hour), errorCount = errorCount + 1, errorCode = :code where apiRowID = :id", array(":id" => $apiRowID, ":code" => $errorCode));
+				$db->execute("update zz_api_characters set cachedUntil = date_add(now(), interval 1 hour), lastChecked = now(), errorCount = errorCount + 1, errorCode = :code where apiRowID = :id", array(":id" => $apiRowID, ":code" => $errorCode));
 				switch($errorCode) {
 					case 28: // Timeouts
 					case 904: // temp ban from ccp's api server
