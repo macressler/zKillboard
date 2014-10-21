@@ -18,6 +18,15 @@
 
 global $apiWhiteList;
 
+// Ensure the requesting server is requesting a compressed version
+$encoding = @$_SERVER["HTTP_ACCEPT_ENCODING"];
+$imploded = explode(",", $encoding);
+if (array_search("gzip", $imploded) === false && array_search("deflate", $imploded) === false)
+{
+	header("HTTP/1.0 406 Non-acceptable encoding.  Please use gzip or deflate");
+	die();
+}
+
 //make sure the requester is not being a naughty boy
 Util::scrapeCheck();
 
