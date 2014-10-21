@@ -296,34 +296,13 @@ class Api
 
 		Db::execute("delete from zz_api_characters where isDirector = ''"); // Minor cleanup
 		$fetchesPerSecond = (int) Storage::retrieve("APIFetchesPerSecond", 30);
-		$timer = new Timer();
+		Db::execute("update zz_api_characters set modulus = (apiRowID % :modulus) where modulus is null", array(":modulus" => $fetchesPerSecond));
 
-		$maxTime = 60 * 1000;
-		while ($timer->stop() < $maxTime) {
-			if (Util::isMaintenanceMode()) return;
-
-			$allChars = Db::query("select apiRowID, cachedUntil from zz_api_characters where errorCount < 10 and cachedUntil < date_sub(now(), interval 10 second) order by cachedUntil, keyID, characterID limit $fetchesPerSecond", array(), 0);
-
-			$total = sizeof($allChars);
-			$iterationCount = 0;
-
-			if ($total == 0) sleep(1);
-			else foreach ($allChars as $char) {
-				if (Util::isMaintenanceMode()) return;
-				if ($timer->stop() > $maxTime) return;
-				if (Util::is904Error()) return;
-
-				$apiRowID = $char["apiRowID"];
-				Db::execute("update zz_api_characters set cachedUntil = date_add(if(cachedUntil=0, now(), cachedUntil), interval 5 minute), lastChecked = now() where apiRowID = :id", array(":id" => $apiRowID));
-
-				$m = $iterationCount % $fetchesPerSecond;
-				$command = "flock -w 60 $baseDir/cache/locks/preFetch.$m php5 $baseDir/cli.php apiFetchKillLog $apiRowID";
-				$command = escapeshellcmd($command);
-				exec("$command >/dev/null 2>/dev/null &");
-
-				$iterationCount++;
-				if ($m == 0) { sleep(1); }
-			}
+		for ($i = 0; $i < $fetchesPerSecond; $i++)
+		{
+			$command = "flock -w 60 $baseDir/cache/locks/preFetch.$i php5 $baseDir/cli.php apiFetchKillLog $i $fetchesPerSecond";
+			$command = escapeshellcmd($command);
+			exec("$command >/dev/null 2>/dev/null &");
 		}
 	}
 
