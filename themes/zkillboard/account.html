@@ -21,6 +21,7 @@
 			<ul class="nav navbar-nav">
 				<li class="{{ isActive('me', key) }}"><a href="/account/me/">Me</a></li>
 				<li class="{{ isActive('changepassword', key) }}"><a href="/account/changepassword/">Change Password</a></li>
+				<li class="{{ isActive('changeemail', key) }}"><a href="/account/changeemail/">Change Email</a></li>
 				<li class="{{ isActive('api', key) }}"><a href="/account/api/">API</a></li>
 				<li class="{{ isActive('sitesettings', key) }}"><a href="/account/sitesettings/">Site Settings</a></li>
 				<li class="{{ isActive('tracker', key) }}"><a href="/account/tracker/">Tracker</a></li>
@@ -37,6 +38,8 @@
 		{% include 'account/me.html' %}
 	{% elseif key == 'changepassword' %}
 		{% include 'account/changepassword.html' %}
+	{% elseif key == 'changeemail' %}
+		{% include 'account/changeemail.html' %}
 	{% elseif key == 'api' %}
 		{% include 'account/api.html' %}
 	{% elseif key == 'sitesettings' %}

@@ -120,6 +120,15 @@ if($_POST)
 		$app->redirect($_SERVER["REQUEST_URI"]);
 	}
 
+	// Email
+	$email = Util::getPost("email");
+
+	if(isset($email))
+	{
+		Db::execute("UPDATE zz_users SET email = :email WHERE id = :userID", array(":email" => $email, ":userID" => $userID));
+	}
+
+	// Password
 	$orgpw = Util::getPost("orgpw");
 	$password = Util::getPost("password");
 	$password2 = Util::getPost("password2");
