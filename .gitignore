@@ -4,7 +4,6 @@ vendor/
 /composer.phar
 *.sublime*
 .lighttpd.conf
-cron.overrides
 public/apc-nrp.php
 www.pid
 public/www.pid
