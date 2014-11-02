@@ -13,14 +13,12 @@ zKillboard is released under the GNU Affero General Public License, version 3. T
 zKillboard also uses data and images from EVE-Online, which is covered by a seperate license from _[CCP](http://www.ccpgames.com/en/home)_. You can see the full license in the `CCP.md` file.
 It also uses various 3rd party libraries, which all carry their own licensing. Please refer to them for more info.
 
-
 # Contact
 `#esc` on `irc.coldfront.net`
 Mibbit link incase you're lazy: _http://chat.mibbit.com/?channel=%23esc&server=irc.coldfront.net_
 
 # LICENSE
 see `LICENSE.md` file
-
 
 # Minimum requirements
 - PHP 5.4+ / HHVM 3.0+
@@ -183,6 +181,14 @@ hhvm.mysql.kill_on_timeout = true
 hhvm.mysql.wait_timeout = -1
 hhvm.mysql.typed_results = true
 ```
+
+# CREST SSO
+zKillboard has support for logging in with CREST.
+
+To get it setup, you must first get a CREST clientID/Secret from CCP. Currently only sisi login is available.
+You can get it from _https://developers.testeveonline.com/applications_
+
+The rest is self explanitory
 
 # Admin account
 
