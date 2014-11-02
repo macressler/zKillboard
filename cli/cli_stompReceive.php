@@ -28,17 +28,9 @@ class cli_stompReceive implements cliCommand
 		return "";
 	}
 
-	public function getCronInfo()
-	{
-		return class_exists("Stomp") ? array(0 => "") : array(); // Always run if stomp class exists
-	}
-
 	public function execute($parameters, $db)
 	{
-		global $stompServer, $stompUser, $stompPassword, $baseAddr, $debug, $killmailFirehose;
-
-		// Listen for all kills?
-		if ($killmailFirehose != true) return;
+		global $stompServer, $stompUser, $stompPassword, $baseAddr, $debug;
 
 		// Ensure the class exists
 		if (!class_exists("Stomp")) {

@@ -28,18 +28,9 @@ class cli_sitemap implements cliCommand
 		return ""; // Space seperated list
 	}
 
-        public function getCronInfo()
-        {
-                return array((24 * 3600) => "");
-        }
-
 	public function execute($parameters, $db)
 	{
 		global $baseAddr, $baseDir, $generateSiteMaps;
-
-		// This is really only for zkillboard.com, you can disable the
-		// next line of code if you want though...
-		if (!isset($generatesiteMaps) || $generateSiteMaps == false) return;
 
 		@mkdir("$baseDir/sitemaps/");
 		$locations = array();

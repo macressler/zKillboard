@@ -51,7 +51,6 @@ class cli_updateCharacters implements cliCommand
 			$result = $db->query("select characterID, name, corporationID, allianceID from zz_characters where lastUpdated < date_sub(now(), interval 7 day) order by lastUpdated limit 100", array(), 0);
 			foreach ($result as $row)
 			{
-				if (Util::isMaintenanceMode()) return;
 				if (Util::is904Error()) return;
 				$id = $row["characterID"];
 

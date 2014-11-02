@@ -28,15 +28,8 @@ class cli_feedzKB implements cliCommand
 		return "";
 	}
 
-	public function getCronInfo()
-	{
-		return array(60 => "");
-	}
-
 	public function execute($parameters, $db)
 	{
-		if (Util::isMaintenanceMode()) return;
-
 		$totalCount = 0;
 		$data = "";
 		// Build the feeds from Admin's tracker list

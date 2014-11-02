@@ -44,7 +44,6 @@ class cli_updateCorporations implements cliCommand
 		//$db->execute("insert ignore into zz_corporations (corporationID) select executorCorpID from zz_alliances where executorCorpID > 0");
 		$result = $db->query("select corporationID, name, memberCount, ticker from zz_corporations where lastUpdated < date_sub(now(), interval 1 week) and corporationID >= 1000001 order by lastUpdated limit 1000", array(), 0);
 		foreach($result as $row) {
-			if (Util::isMaintenanceMode()) return;
 			if (Util::is904Error()) return;
 			$id = $row["corporationID"];
 

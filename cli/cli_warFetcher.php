@@ -29,20 +29,8 @@ class cli_warFetcher implements cliCommand
 		return ""; // Space seperated list
 	}
 
-	/**
-		Fetch new wars every 3 hours
-	*/
-        public function getCronInfo()
-        {
-                return array(10800 => "");
-        }
-
 	public function execute($parameters, $db)
 	{
-                global $fetchWars;
-                if (!isset($fetchWars)) $fetchWars = false;
-                if ($fetchWars == false) return;
-
 		$page = Db::queryField("select floor(count(*) / 2000) page from zz_wars", "page", array(), 0);
 		if ($page == 0) $page = 1;
 

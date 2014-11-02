@@ -59,7 +59,6 @@ class cli_calculateAllTimeStatsAndRanks implements cliCommand
 
 	private static function ranks($db)
 	{
-		if (Util::isMaintenanceMode()) return;
 		$db->execute("create table if not exists zz_ranks_temporary like zz_ranks");
 		$db->execute("truncate table zz_ranks_temporary");
 

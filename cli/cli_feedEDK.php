@@ -28,13 +28,6 @@ class cli_feedEDK implements cliCommand
 		return "add remove list fetch"; // Space seperated list
 	}
 
-	public function getCronInfo()
-	{
-		return array(
-			3600 => "fetch"
-		);
-	}
-
 	public function execute($parameters, $db)
 	{
 		if (sizeof($parameters) == 0 || $parameters[0] == "") CLI::out("Usage: |g|help <command>|n| To see a list of commands, use: |g|list", true);
