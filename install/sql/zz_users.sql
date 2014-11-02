@@ -13,6 +13,8 @@ CREATE TABLE `zz_users` (
   `change_hash` varchar(40) DEFAULT NULL,
   `change_expiration` timestamp NULL DEFAULT NULL,
   `revoked_reason` varchar(64) NOT NULL,
+  `characterID` INT(11) NULL DEFAULT NULL,
+  `merged` INT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`),
   UNIQUE KEY `email` (`email`),

@@ -466,6 +466,52 @@ class Util
 	}
 
 	/**
+	 * @param string $url
+	 * @param array
+	 * @param array
+	 * @return array $result
+	 */
+	public static function postData($url, $postData = array(), $headers = array())
+	{
+		global $ipsAvailable, $baseAddr;
+		$userAgent = "zKillboard dataGetter for site: {$baseAddr}";
+		if(!isset($headers))
+			$headers = array("Connection: keep-alive", "Keep-Alive: timeout=10, max=1000");
+
+		$curl = curl_init();
+		$postLine = "";
+
+		if(!empty($postData))
+			foreach($postData as $key => $value)
+				$postLine .= $key . "=" . $value . "&";
+
+		rtrim($postLine, "&");
+
+		curl_setopt($curl, CURLOPT_URL, $url);
+		curl_setopt($curl, CURLOPT_USERAGENT, $userAgent);
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		if(!empty($postData))
+		{
+			curl_setopt($curl, CURLOPT_POST, count($postData));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $postLine);
+		}
+
+		if(count($ipsAvailable) > 0)
+		{
+			$ip = $ipsAvailable[time() % count($ipsAvailable)];
+			curl_setopt($curl, CURLOPT_INTERFACE, $ip);
+		}
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, true);
+		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 2);
+
+		$result = curl_exec($curl);
+
+		curl_close($curl);
+		return $result;
+	}
+
+	/**
 	 * Gets post data, and returns it
 	 * @param  string $var The variable you can to return
 	 * @return string|null

@@ -361,6 +361,15 @@ class Info
 		return "Corporation $id";
 	}
 
+	public static function getCorporationTicker($corporationID)
+	{
+		$pheal = Util::getPheal();
+		$pheal->scope = "corp";
+
+		$data = $pheal->CorporationSheet(array("corporationID" => $corporationID));
+		return $data->ticker;
+	}
+
 	/**
 	 * [getAlliID description]
 	 * @param  string $name
@@ -370,6 +379,11 @@ class Info
 	{
 		return Db::queryField("select allianceID from zz_alliances where name = :name order by memberCount desc limit 1", "allianceID",
 				array(":name" => $name), 3600);
+	}
+
+	public static function getAllianceTicker($allianceID)
+	{
+		return Db::queryField("SELECT ticker FROM zz_alliances WHERE allianceID = :allianceID", "ticker", array(":allianceID" => $allianceID));
 	}
 
 	/**
@@ -445,6 +459,29 @@ class Info
 			return $id;
 		}
 		return $name;
+	}
+
+	/**
+	 * Character affiliation
+	*/
+	public static function getCharacterAffiliations($characterID)
+	{
+		$pheal = Util::getPheal();
+		$pheal->scope = "eve";
+
+		$affiliations = $pheal->CharacterAffiliation(array("ids" => $characterID));
+
+		$corporationID = $affiliations->characters[0]->corporationID;
+		$corporationName = $affiliations->characters[0]->corporationName;
+		$allianceID = $affiliations->characters[0]->allianceID;
+		$allianceName = $affiliations->characters[0]->allianceName;
+
+		// Get the ticker for corp and alliance
+		$corporationTicker = Info::getCorporationTicker($corporationID);
+		$allianceTicker = Info::getAllianceTicker($allianceID);
+
+		return array("corporationID" => $corporationID, "corporationName" => $corporationName, "corporationTicker" => $corporationTicker, "allianceID" => $allianceID, "allianceName" => $allianceName, "allianceTicker" => $allianceTicker);
+
 	}
 
 	/**

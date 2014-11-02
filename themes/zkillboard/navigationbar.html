@@ -158,6 +158,9 @@
 							<li><a href="/login/">Login</a></li>
 							<li><a href="/forgotpassword/">Forgot Password</a></li>
 							<li><a href="/register/">Register</a></li>
+							{% if eveSSOEnabled %}
+							<li><a href="{{ eveSSOURL }}"><img src="https://images.contentful.com/idjq7aai9ylm/4fSjj56uD6CYwYyus4KmES/4f6385c91e6de56274d99496e6adebab/EVE_SSO_Login_Buttons_Large_Black.png?w=270&h=45"/></a></li>
+							{% endif %}
 						{% endif %}
 					</ul>
 				</li>

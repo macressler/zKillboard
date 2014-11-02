@@ -93,6 +93,8 @@ $twig->addGlobal("igbbottomad", Google::ad($bottomCaPub, $bottomAdSlot, $adWidth
 $twig->addGlobal("analytics", Google::analytics($analyticsID, $analyticsName));
 $twig->addGlobal("fbAppID", $facebookAppID);
 $twig->addGlobal("disqusLoad", $disqus);
+$twig->addGlobal("eveSSOURL", OAuth::eveSSOLoginURL());
+$twig->addGlobal("eveSSOEnabled", $ssoEnable);
 $noAdPages = array("/account/", "/moderator/", "/ticket", "/register/", "/information/", "/login");
 foreach($noAdPages as $noAdPage) {
 	$showAds &= !Util::startsWith($uri, $noAdPage);

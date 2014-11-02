@@ -42,6 +42,16 @@ $baseAddr = "%baseaddr%";
 $fullAddr = "http://" . $baseAddr;
 chdir($baseDir);
 
+// SSO
+$ssoEnable = false;
+$ssoServer = "https://sisilogin.testeveonline.com";
+$ssoResponseType = "code";
+$ssoRedirectURI = "{$fullAddr}/auth/eve/";
+$ssoClientID = "";
+$ssoSecret = "";
+$ssoScope = "";
+$ssoState = "";
+
 // Theme / Style and Name
 $killboardName = "zKillboard";
 $theme = "zkillboard";
