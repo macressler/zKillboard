@@ -47,9 +47,6 @@ $killboardName = "zKillboard";
 $theme = "zkillboard";
 $style = "cyborg";
 
-// Generate sitemaps
-$generateSiteMaps = false;
-
 // Debug
 $debug = true;
 
@@ -140,9 +137,3 @@ $beSocial = false;
 
 # Parse kills in ascending killID order
 $parseAscending = true;
-
-# Fetch all war killmails
-$fetchWars = false;
-
-# Listen for all kills?
-$killmailFirehose = false;
