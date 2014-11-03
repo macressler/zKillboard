@@ -14,10 +14,10 @@
 	"warFetcher":{
 		"10800":"disabled"
 	},
-    "wars":{
-        "0":"disabled"
-    },
-    "sitemap":{
-    	"86400":"disabled"
-    }
+	"wars":{
+		"0":"disabled"
+	},
+	"sitemap":{
+		"86400":"disabled"
+	}
 }
