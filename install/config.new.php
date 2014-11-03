@@ -130,7 +130,7 @@ $facebookAppID = null;
 
 // Slim config
 $config = array(
-	"mode" => "production",
+	"mode" => ($debug ? "development" : "production"),
 	"debug" => ($debug ? true : false),
 	"log.enabled" => false,
 	"cookies.secret_key" => $cookie_secret
