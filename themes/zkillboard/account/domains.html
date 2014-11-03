@@ -10,8 +10,8 @@
 			<th>Banner</th>
 		</tr>
 	</thead>
-    <tbody>
-        {% for data in data.domainCorps %}
+	<tbody>
+		{% for data in data.domainCorps %}
 		{% set field = data %}
 		<form method="post" action="." name="banner">
 		<tr>
@@ -26,25 +26,25 @@
 				<td><input class="form-control" type="url" placeholder="No banner..." name="banner" value="{{ field.banner }}"><input class="btn btn-default btn-xs btn-success" type="submit" value="Update"><input type="hidden" name="subdomain" value="{{ field.corpTicker|lower }}.{{ siteurl }}"></td>
 		</tr>
 		</form>
-        {% endfor %}
-        {% for data in data.domainAllis %}
-                {% set field = data %}
-		<form method="post" action="." name="banner">
-                <tr>   
-                        <td>{% include 'components/text_alli.html' %}</td>
-                        <td><a href="http://{{ field.alliTicker|lower }}.{{ siteurl }}" target="_blank">http://{{ field.alliTicker|lower }}.{{ siteurl }}</a></td>
-			<td><input class="form-control" placeholder="No alias..." name="alias" value="{{ field.alias }}"></td>
-                        {% if field.adfreeUntil %}
-                                <td>Adfree until {{ field.adfreeUntil }}</td>
-                        {% else %}
-                                <td><em>Ads are displayed...</em></td>
-                        {% endif %}
-                                <td><input class="form-control" type="url" placeholder="No banner..." name="banner" value="{{ field.banner }}"><input class="btn btn-default btn-xs btn-success" type="submit" value="Update"><input type="hidden" name="subdomain" value="{{ field.alliTicker|lower }}.{{ siteurl }}"></td>
-                </tr>
-		</form>
-        {% endfor %}
-	<tr><td colspan="3"><td class="text-align: right" colspan="4">Banner Example: <a href="http://i.imgur.com/qZ4ETsf.png" target="_blank">http://i.imgur.com/qZ4ETsf.png</a></td></tr>
-    </tbody>
+		{% endfor %}
+		{% for data in data.domainAllis %}
+			{% set field = data %}
+			<form method="post" action="." name="banner">
+				<tr>
+					<td>{% include 'components/text_alli.html' %}</td>
+					<td><a href="http://{{ field.alliTicker|lower }}.{{ siteurl }}" target="_blank">http://{{ field.alliTicker|lower }}.{{ siteurl }}</a></td>
+					<td><input class="form-control" placeholder="No alias..." name="alias" value="{{ field.alias }}"></td>
+					{% if field.adfreeUntil %}
+						<td>Adfree until {{ field.adfreeUntil }}</td>
+					{% else %}
+						<td><em>Ads are displayed...</em></td>
+					{% endif %}
+						<td><input class="form-control" type="url" placeholder="No banner..." name="banner" value="{{ field.banner }}"><input class="btn btn-default btn-xs btn-success" type="submit" value="Update"><input type="hidden" name="subdomain" value="{{ field.alliTicker|lower }}.{{ siteurl }}"></td>
+				</tr>
+			</form>
+		{% endfor %}
+		<tr><td colspan="3"><td class="text-align: right" colspan="4">Banner Example: <a href="http://i.imgur.com/qZ4ETsf.png" target="_blank">http://i.imgur.com/qZ4ETsf.png</a></td></tr>
+	</tbody>
 </table>
 <ul>
 	<li>URL alias should be of the format <i>alias</i>.zkillboard.com</li>
@@ -67,8 +67,8 @@
 			<th>URL</th>
 		</tr>
 	</thead>
-    <tbody>
-        {% for data in data.domainChars %}
+	<tbody>
+		{% for data in data.domainChars %}
 		{% set field = data %}
 		<tr>
 			<td>{% include 'components/text_char.html' %}</td>
@@ -82,8 +82,8 @@
 			<td>&nbsp;</td>
 			{% endif %}
 		</tr>
-        {% endfor %}
-    </tbody>
+		{% endfor %}
+	</tbody>
 </table>
 {% else %}
 <p>Your account has no API tied to it, therefore we have no idea what to display for you here...</p>
@@ -93,5 +93,7 @@
 <ul>
 	<li>Subdomains are detected based on the ticker of an entity in the following order: faction &gt; alliance &gt; corporation.</li>
 	<li>Subdomains are only valid if the entity has had a kill in the last 6 months.</li>
-	<li>To remove ads from subdomains, click <a href="/information/payments/">here for directions</a>.</li>
+	{% if adFreeMonthCost %}
+		<li>To remove ads from subdomains, click <a href="/information/payments/">here for directions</a>.</li>
+	{% endif %}
 </ul>
