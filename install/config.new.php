@@ -44,7 +44,7 @@ chdir($baseDir);
 
 // SSO
 $ssoEnable = false;
-$ssoServer = "https://sisilogin.testeveonline.com";
+$ssoServer = "https://login.eveonline.com"; // use https://sisilogin.testeveonline.com for the test server
 $ssoResponseType = "code";
 $ssoRedirectURI = "{$fullAddr}/auth/eve/";
 $ssoClientID = "";
