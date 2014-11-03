@@ -44,16 +44,16 @@ class cli_crest_users implements cliCommand
 
 			if($affilliations["corporationID"] != $user["corporationID"])
 			{
-				Db::execute("UPDATE zz_users_crest SET corporationID = :corporationID WHERE userID = :userID", array(":corporationID" => $affiliations["corporationID"], ":userID" => $user["userID"]));
-				Db::execute("UPDATE zz_users_crest SET corporationName = :corporationName WHERE userID = :userID", array(":corporationName" => $affiliations["corporationName"], ":userID" => $user["userID"]));
-				Db::execute("UPDATE zz_users_crest SET corporationTicker = :corporationTicker WHERE userID = :userID", array(":corporationTicker" => $affiliations["corporationTicker"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET corporationID = :corporationID WHERE userID = :userID", array(":corporationID" => $affilliations["corporationID"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET corporationName = :corporationName WHERE userID = :userID", array(":corporationName" => $affilliations["corporationName"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET corporationTicker = :corporationTicker WHERE userID = :userID", array(":corporationTicker" => $affilliations["corporationTicker"], ":userID" => $user["userID"]));
 			}
 
-			if($affiliations["allianceID"] != $user["allianceID"])
+			if($affilliations["allianceID"] != $user["allianceID"])
 			{
-				Db::execute("UPDATE zz_users_crest SET allianceID = :allianceID WHERE userID = :userID", array(":allianceID" => $affiliations["allianceID"], ":userID" => $user["userID"]));
-				Db::execute("UPDATE zz_users_crest SET allianceName = :allianceName WHERE userID = :userID", array(":allianceName" => $affiliations["allianceName"], ":userID" => $user["userID"]));
-				Db::execute("UPDATE zz_users_crest SET allianceTicker = :allianceTicker WHERE userID = :userID", array(":allianceTicker" => $affiliations["allianceTicker"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET allianceID = :allianceID WHERE userID = :userID", array(":allianceID" => $affilliations["allianceID"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET allianceName = :allianceName WHERE userID = :userID", array(":allianceName" => $affilliations["allianceName"], ":userID" => $user["userID"]));
+				Db::execute("UPDATE zz_users_crest SET allianceTicker = :allianceTicker WHERE userID = :userID", array(":allianceTicker" => $affilliations["allianceTicker"], ":userID" => $user["userID"]));
 			}
 		}
 	}
