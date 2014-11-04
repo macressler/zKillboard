@@ -190,6 +190,10 @@ You can get it from _https://developers.testeveonline.com/applications_
 
 The rest is self explanitory
 
+# Updating CCP tables
+To update the CCP tables, run the cli script called ```updateCCPData``` like so (assuming you symlinked cli.php) ```zkillboard updateCCPData```
+It will then automatically download the latest tables from Fuzzysteve, and import them.
+
 # Admin account
 
 Every clean zKillboard installation comes with an admin account, default username and password is `admin`, it is highly recommended that you immediately change this password after you finish your installation.
