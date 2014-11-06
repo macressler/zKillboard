@@ -1,4 +1,12 @@
 <?php
+$loggedIn = (isset($_SESSION["loggedin"]) ? $_SESSION["loggedin"] : false);
+
+
+if(!empty($loggedIn))
+{
+    $app->render("dlogin.html", array("close" => true));
+}
+
 if($_POST)
 {
     $username = Util::getPost("username");

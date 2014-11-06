@@ -27,12 +27,16 @@ class Disqus
 		$userID = $userInfo["id"];
 		$username = $userInfo["username"];
 		$email = $userInfo["email"];
+		$characterID = (isset($userInfo["characterID"]) ? $userInfo["characterID"] : null);
 
 		$data = array(
 			"id" => $userID,
 			"username" => $username,
-			"email" => $email,
+			"email" => $email
 		);
+
+		if($characterID)
+			$data["avatar"] = "https://image.eveonline.com/Character/{$characterID}_32.jpg";
 
 		$message = base64_encode(json_encode($data));
 		$timestamp = time();
@@ -49,7 +53,7 @@ class Disqus
 		$js .= "			url: '".$fullAddr."/dlogin/',\n";
 		$js .= "			logout: '".$fullAddr."/logout',\n";
 		$js .= "			width: '300',\n";
-		$js .= "			height: '232'\n";
+		$js .= "			height: '245'\n";
 		$js .= "		};\n";
 		$js .= "	};";
 
