@@ -38,7 +38,7 @@ class Disqus
 		if($characterID)
 		{
 			$data["avatar"] = "https://image.eveonline.com/Character/{$characterID}_32.jpg";
-			$data["url"] = "{{ fullAddr }}/character/{$characterID}/";
+			$data["url"] = "{$fullAddr}/character/{$characterID}/";
 		}
 
 		$message = base64_encode(json_encode($data));
