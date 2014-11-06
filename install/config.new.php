@@ -94,6 +94,7 @@ $stompPassword = "guest";
 
 // Disqus
 $disqus = false;
+$disqusSSO = false;
 $disqusShortName = "";
 $disqusSecretKey = "";
 $disqusPublicKey = "";

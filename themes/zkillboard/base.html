@@ -166,6 +166,9 @@
 				}());
 			</script>
 		{% endif %}
+		{% if disqusSSO and disqusLoad %}
+			{{ disqus|raw }}
+		{% endif %}
 
 		{% if showFacebook != false %}
 			<script>

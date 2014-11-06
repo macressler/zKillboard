@@ -34,7 +34,7 @@ if(User::isLoggedIn())
 $cachepath = "cache/templates/" . $theme;
 $view = $app->view();
 $view->parserOptions = array(
-    "debug" => true,
+    "debug" => ($debug ? true : false),
     "cache" => $cachepath
 );
 
@@ -47,7 +47,7 @@ $uri = $_SERVER["REQUEST_URI"];
 $explode = explode("/", $uri);
 $expager = explode("/", $uri);
 
-foreach($expager as $key => $ex) 
+foreach($expager as $key => $ex)
 {
 	if(in_array($ex, array("page")))
 	{
@@ -103,10 +103,9 @@ foreach($noAdPages as $noAdPage) {
 $twig->addglobal("showAnalytics", $showAnalytics);
 $twig->addGlobal("showFacebook", $showFacebook && UserConfig::get("showFacebook", true));
 if($disqus)
-{
     $twig->addGlobal("disqusShortName", $disqusShortName);
-    $twig->addglobal("disqus", Disqus::init());
-}
+if($disqusSSO)
+    $twig->addglobal("disqusSSO", Disqus::init());
 
 // User's account balance
 $twig->addGlobal("accountBalance", $accountBalance);
