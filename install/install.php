@@ -183,7 +183,7 @@ if($ln == true)
 // move cron.overrides to main dir
 // Save the file and then attempt to load and initialize from that file
 $cronoverridesLoc = "$base/../cronoverrides";
-$cronOverrides = file_get_content("$base/cron.overrides");
+$cronOverrides = file_get_contents("$base/cron.overrides");
 if (file_put_contents($cronoverridesLoc, $cronOverrides) === false)
 	out("|r|Unable to write cron.overrides at $cronoverridesLoc", true);
 
