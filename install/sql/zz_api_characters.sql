@@ -11,6 +11,7 @@ CREATE TABLE `zz_api_characters` (
   `lastChecked` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `errorCode` int(6) NOT NULL,
   `errorCount` int(3) NOT NULL DEFAULT '0',
+  `modulus` int(2) DEFAULT NULL,
   PRIMARY KEY (`apiRowID`),
   UNIQUE KEY `keyID` (`keyID`,`characterID`),
   KEY `user_id` (`keyID`),
@@ -18,6 +19,7 @@ CREATE TABLE `zz_api_characters` (
   KEY `corporationID` (`corporationID`),
   KEY `isDirector` (`isDirector`),
   KEY `cachedUntil` (`cachedUntil`),
-  KEY `errorCount` (`errorCount`)
+  KEY `errorCount` (`errorCount`),
+  KEY `mod` (`modulus`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 

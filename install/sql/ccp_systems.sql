@@ -4,7 +4,7 @@ CREATE TABLE `ccp_systems` (
   `regionID` int(11) DEFAULT NULL,
   `constellationID` int(11) DEFAULT NULL,
   `solarSystemID` int(11) NOT NULL,
-  `solarSystemName` varchar(100) DEFAULT NULL,
+  `solarSystemName` longtext,
   `x` double DEFAULT NULL,
   `y` double DEFAULT NULL,
   `z` double DEFAULT NULL,
@@ -15,26 +15,23 @@ CREATE TABLE `ccp_systems` (
   `zMin` double DEFAULT NULL,
   `zMax` double DEFAULT NULL,
   `luminosity` double DEFAULT NULL,
-  `border` tinyint(1) DEFAULT NULL,
-  `fringe` tinyint(1) DEFAULT NULL,
-  `corridor` tinyint(1) DEFAULT NULL,
-  `hub` tinyint(1) DEFAULT NULL,
-  `international` tinyint(1) DEFAULT NULL,
-  `regional` tinyint(1) DEFAULT NULL,
-  `constellation` tinyint(1) DEFAULT NULL,
+  `border` tinyint(4) DEFAULT NULL,
+  `fringe` tinyint(4) DEFAULT NULL,
+  `corridor` tinyint(4) DEFAULT NULL,
+  `hub` tinyint(4) DEFAULT NULL,
+  `international` tinyint(4) DEFAULT NULL,
+  `regional` tinyint(4) DEFAULT NULL,
+  `constellation` tinyint(4) DEFAULT NULL,
   `security` double DEFAULT NULL,
   `factionID` int(11) DEFAULT NULL,
   `radius` double DEFAULT NULL,
   `sunTypeID` int(11) DEFAULT NULL,
-  `securityClass` varchar(2) DEFAULT NULL,
+  `securityClass` longtext,
   PRIMARY KEY (`solarSystemID`),
-  UNIQUE KEY `solarSystemID` (`solarSystemID`,`constellationID`,`regionID`),
-  KEY `mapSolarSystems_IX_constellation` (`constellationID`),
-  KEY `mapSolarSystems_IX_region` (`regionID`),
-  KEY `mapSolarSystems_IX_security` (`security`),
-  KEY `factionID` (`factionID`),
-  KEY `sunTypeID` (`sunTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `ccp_systems_IX_region` (`regionID`),
+  KEY `ccp_systems_IX_constellation` (`constellationID`),
+  KEY `ccp_systems_IX_security` (`security`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 LOCK TABLES `ccp_systems` WRITE;

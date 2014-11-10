@@ -2,7 +2,7 @@
 DROP TABLE IF EXISTS `ccp_regions`;
 CREATE TABLE `ccp_regions` (
   `regionID` int(11) NOT NULL,
-  `regionName` varchar(100) DEFAULT NULL,
+  `regionName` longtext,
   `x` double DEFAULT NULL,
   `y` double DEFAULT NULL,
   `z` double DEFAULT NULL,
@@ -15,8 +15,8 @@ CREATE TABLE `ccp_regions` (
   `factionID` int(11) DEFAULT NULL,
   `radius` double DEFAULT NULL,
   PRIMARY KEY (`regionID`),
-  KEY `factionID` (`factionID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+  KEY `ccp_regions_IX_region` (`regionID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 LOCK TABLES `ccp_regions` WRITE;
