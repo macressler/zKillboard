@@ -116,10 +116,12 @@ $banner = Db::queryField("select banner from zz_subdomains where (subdomain = :s
 if ($banner) 
 {
 	$banner = str_replace("http://i.imgur.com/", "https://i.imgur.com/", $banner);
+	$banner = str_replace("http://imgur.com/", "https://imgur.com/", $banner);
 	$twig->addGlobal("headerImage", $banner);
 }
 
 $adfree = Db::queryField("select count(*) count from zz_subdomains where adfreeUntil >= now() and subdomain = :server", "count", array(":server" => $_SERVER["SERVER_NAME"]), 60);
+$adfree |= Db::queryField("select count(*) count from zz_subdomains where adfreeUntil >= now() and alias = :server", "count", array(":server" => $_SERVER["SERVER_NAME"]), 60);
 if ($adfree) $twig->addGlobal("showAds", false);
 else $twig->addGlobal("showAds", $showAds);
 Subdomains::getSubdomainParameters($_SERVER["SERVER_NAME"]);
