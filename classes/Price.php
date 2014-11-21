@@ -100,7 +100,11 @@ class Price
 		{
 			foreach ($json["items"] as $row)
 			{
-				Db::execute("insert ignore into zz_item_price_lookup (typeID, priceDate, lowPrice, avgPrice, highPrice) values (:typeID, :date, :low, :avg, :high)", array(":typeID" => $typeID, ":date" => $row["date"], ":low" => $row["lowPrice"], ":avg" => $row["avgPrice"], ":high" => $row["highPrice"]));
+				$hasRow = Db::queryField("select count(1) count from zz_item_price_lookup where typeID = :typeID and priceDate = :date", "count", array(":typeID" => $typeID, ":date" => $row["date"]));
+				if ($hasRow == 0)
+				{
+					Db::execute("insert ignore into zz_item_price_lookup (typeID, priceDate, lowPrice, avgPrice, highPrice) values (:typeID, :date, :low, :avg, :high)", array(":typeID" => $typeID, ":date" => $row["date"], ":low" => $row["lowPrice"], ":avg" => $row["avgPrice"], ":high" => $row["highPrice"]));
+				}
 			}
 		}
 		Storage::store($todaysLookupTypeID, "true"); // Add today's lookup entry for this item
