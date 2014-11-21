@@ -68,7 +68,7 @@ class Parser
 					continue;
 				}
 				$killID = $kill["killID"];
-				$hash = Db::queryField("select hash from zz_killmails where killID = :killID", "hash", array(":killID" => $killID));
+				$hash = $row["hash"];
 
 				// Because of CREST caching and the want for accurate prices, don't process the first hour
 				// of kills until after 01:05 each day
@@ -127,12 +127,12 @@ class Parser
 			if ($numProcessed) {
 				Db::execute("insert ignore into zz_stats_queue values (" . implode("), (", $processedKills) . ")");
 				Db::execute("update zz_killmails set processed = 1 where killID in (" . implode(",", $processedKills) . ")");
-				Db::execute("insert into zz_storage (locker, contents) values ('KillsAdded', :num) on duplicate key update contents = contents + :num", array(":num" => $numProcessed));
 			}
 		}
 		if ($numKills > 0)
 		{
 			Log::log("Processed $numKills kills");
+			Db::execute("insert into zz_storage (locker, contents) values ('KillsAdded', :num) on duplicate key update contents = contents + :num", array(":num" => $numKills));
 		}
 		self::removeTempTables();
 	}
@@ -263,20 +263,11 @@ class Parser
 	 */
 	private static function processItem(&$kill, &$killID, &$item, $itemInsertOrder, $isCargo = false, $parentContainerFlag = -1)
 	{
-		global $itemNames;
-
 		$dttm = (string) $kill["killTime"];
 
-		if ($itemNames == null ) {
-			$itemNames = array();
-			$results = Db::query("select typeID, typeName from ccp_invTypes", array(), 3600);
-			foreach ($results as $row) {
-				$itemNames[$row["typeID"]] = $row["typeName"];
-			}
-		}
+		$itemName = Db::queryField("select typeName from ccp_invTypes where typeID = :typeID", "typeName", array(":typeID" => $item["typeID"]));
+		if ($itemName == null) $itemName = "TypeID $typeID";
 		$typeID = $item["typeID"];
-		if (isset($item["typeID"]) && isset($itemNames[$item["typeID"]])) $itemName = $itemNames[$item["typeID"]];
-		else $itemName = "TypeID $typeID";
 
 		if ($item["typeID"] == 33329 && $item["flag"] == 89) $price = 0.01; // Golden pod implant can't be destroyed
 		else $price = Price::getItemPrice($typeID, $dttm, true);
