@@ -25,13 +25,19 @@ if (strlen("$id") > 11) $app->redirect("/");
 
 if ($pageType == "history") $app->redirect("../stats/");
 
-$validPageTypes = array("overview", "kills", "losses", "top", "topalltime", "solo", "stats", "wars", "supers");
+$validPageTypes = array("overview", "kills", "losses", "solo", "stats", "wars", "supers");
 if ($key == "alliance")
 {
 	$validPageTypes[] = "api";
 	$validPageTypes[] = "corpstats";
 }
-if (!in_array($pageType, $validPageTypes)) $pageType = "overview";
+if ($key != "faction") 
+{
+	$validPageTypes[] = "top";
+	$validPageTypes[] = "topalltime";
+}
+if (!in_array($pageType, $validPageTypes) && $pageType != "") $app->redirect("/$key/$id/");
+if ($pageType == "") $pageType = "overview";
 
 $map = array(
 		"corporation"   => array("column" => "corporation", "id" => "Info::getCorpId", "details" => "Info::getCorpDetails", "mixed" => true),
