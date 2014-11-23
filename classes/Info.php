@@ -232,8 +232,8 @@ class Info
 	public static function addAlli($id, $name)
 	{
 		if ($id <= 0) return;
-		Db::execute("insert ignore into zz_alliances (allianceID, name) values (:id, :name)",
-				array(":id" => $id, ":name" => $name));
+		$exists = Db::queryField("select count(1) count from zz_alliances where allianceID = :id", "count", array(":id" => $id));
+		if ($exists == 0) Db::execute("insert ignore into zz_alliances (allianceID, name) values (:id, :name)", array(":id" => $id, ":name" => $name));
 	}
 
 	/**
@@ -429,8 +429,8 @@ class Info
 	public static function addChar($id, $name)
 	{
 		if ($id <= 0) return;
-		Db::execute("insert ignore into zz_characters (characterID, name) values (:id, :name)",
-				array(":id" => $id, ":name" => $name));
+		$exists = Db::queryField("select count(1) count from zz_characters where characterID = :id", "count", array(":id" => $id));
+		if ($exists == 0) Db::execute("insert ignore into zz_characters (characterID, name) values (:id, :name)", array(":id" => $id, ":name" => $name));
 	}
 
 	/**
@@ -652,8 +652,8 @@ class Info
 	public static function addCorp($id, $name)
 	{
 		if ($id <= 0) return;
-		Db::execute("insert ignore into zz_corporations (corporationID, name) values (:id, :name)",
-				array(":id" => $id, ":name" => $name));
+		$exists = Db::queryField("select count(1) count from zz_corporations where corporationID = :id", "count", array(":id" => $id));
+		if ($exists == 0) Db::execute("insert ignore into zz_corporations (corporationID, name) values (:id, :name)", array(":id" => $id, ":name" => $name));
 	}
 
 	/**
