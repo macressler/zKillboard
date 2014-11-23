@@ -52,8 +52,8 @@ if($_POST)
 			$subject = "zKillboard Ticket";
 			global $baseAddr;
 			$message = "$ticname, there is a new reply to your ticket from $name - https://$baseAddr/tickets/view/$id/";
-			if ($moderator == 0) Log::ircAdmin("User replied to ticket: |g|$name|n|  https://$baseAddr/moderator/tickets/$id/");
-			if ($moderator != 0) Email::send($ticmail, $subject, $message);
+			if ($moderator == 0) Log::irc("User replied to ticket: |g|$name|n|  https://$baseAddr/moderator/tickets/$id/");
+			//if ($moderator != 0) Email::send($ticmail, $subject, $message);
 			if(isset($report))
 				$app->redirect("/moderator/reportedkills/$id/");
 			$app->redirect("/moderator/tickets/$id/");

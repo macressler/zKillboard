@@ -36,7 +36,7 @@ class Registration
 			Db::execute("INSERT INTO zz_users (username, password, email) VALUES (:username, :password, :email)", array(":username" => $username, ":password" => $hashedpassword, ":email" => $email));
 			$subject = "$baseAddr Registration";
 			$message = "Thank you, $username, for registering at $baseAddr";
-			Email::send($email, $subject, $message);
+			//Email::send($email, $subject, $message);
 			$message = "You have been registered, you should recieve a confirmation email in a moment, in the mean time you can click login and login!";
 			return array("type" => "success", "message" => $message);
 		}

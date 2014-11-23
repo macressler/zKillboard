@@ -36,8 +36,7 @@ if ($key != "faction")
 	$validPageTypes[] = "top";
 	$validPageTypes[] = "topalltime";
 }
-if (!in_array($pageType, $validPageTypes) && $pageType != "") $app->redirect("/$key/$id/");
-if ($pageType == "") $pageType = "overview";
+if (!in_array($pageType, $validPageTypes)) $pageType = "overview";
 
 $map = array(
 		"corporation"   => array("column" => "corporation", "id" => "Info::getCorpId", "details" => "Info::getCorpDetails", "mixed" => true),
