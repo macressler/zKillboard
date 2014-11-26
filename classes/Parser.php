@@ -122,7 +122,7 @@ class Parser
 			if (sizeof($cleanupKills)) {
 				Db::execute("delete from zz_participants where killID in (" . implode(",", $cleanupKills) . ")");
 			}
-			Db::execute("insert into zz_participants select * from zz_participants_temporary");
+			Db::execute("insert ignore into zz_participants select * from zz_participants_temporary");
 			$numProcessed = sizeof($processedKills);
 			if ($numProcessed) {
 				Db::execute("insert ignore into zz_stats_queue values (" . implode("), (", $processedKills) . ")");
@@ -171,7 +171,7 @@ class Parser
 	{
 		$dttm = (string) $kill["killTime"];
 
-		$shipPrice = Price::getItemPrice($victim["shipTypeID"], $dttm, false);
+		$shipPrice = Price::getItemPrice($victim["shipTypeID"], $dttm, true);
 		$groupID = Info::getGroupID($victim["shipTypeID"]);
 		$regionID = Info::getRegionIDFromSystemID($kill["solarSystemID"]);
 
@@ -270,7 +270,7 @@ class Parser
 		$typeID = $item["typeID"];
 
 		if ($item["typeID"] == 33329 && $item["flag"] == 89) $price = 0.01; // Golden pod implant can't be destroyed
-		else $price = Price::getItemPrice($typeID, $dttm, false);
+		else $price = Price::getItemPrice($typeID, $dttm, true);
 		if ($isCargo && strpos($itemName, "Blueprint") !== false) $item["singleton"] = 2;
 		if ($item["singleton"] == 2) {
 			$price = $price / 100;
