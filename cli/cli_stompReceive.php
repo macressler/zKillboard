@@ -28,6 +28,11 @@ class cli_stompReceive implements cliCommand
 		return "";
 	}
 
+        public function getCronInfo()
+        {
+                return array(0 => "");
+        }	
+
 	public function execute($parameters, $db)
 	{
 		global $stompServer, $stompUser, $stompPassword, $baseAddr, $debug;
