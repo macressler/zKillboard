@@ -103,7 +103,7 @@ class Filters
 
 		if (array_key_exists("w-space", $parameters)) {
 			$tables[] = "zz_participants p";
-			$whereClauses[] = "(regionID >= '11000001' and regionID <= '11000030')";
+			$whereClauses[] = "(regionID >= '11000001' and regionID <= '11000032')";
 		}
 
 		if (array_key_exists("lowsec", $parameters)) {
