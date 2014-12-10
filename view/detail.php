@@ -46,6 +46,11 @@ if($_POST)
 	}
 }
 
+$killKey = "CacheKill:$id:$pageview";
+$details = Cache::get($killKey);
+if ($details == null)
+{
+
 // Create the details on this kill
 $killdata = Kills::getKillDetails($id);
 
@@ -128,7 +133,11 @@ else $relatedShip = Db::queryRow("select killID, shipTypeID from zz_participants
 Info::addInfo($relatedShip);
 $killdata["victim"]["related"] = $relatedShip;
 
-$app->render("detail.html", array("pageview" => $pageview, "killdata" => $killdata, "extra" => $extra, "message" => $message, "flags" => Info::$effectToSlot, "topDamage" => $topDamage, "finalBlow" => $finalBlow, "url" => $url));
+$details = array("pageview" => $pageview, "killdata" => $killdata, "extra" => $extra, "message" => $message, "flags" => Info::$effectToSlot, "topDamage" => $topDamage, "finalBlow" => $finalBlow, "url" => $url);
+Cache::set($killKey, $details);
+}
+
+$app->render("detail.html", $details);
 
 function involvedships($array)
 {
