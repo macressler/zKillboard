@@ -61,5 +61,10 @@ class cli_every15 implements cliCommand
                 // Clean up the related killmails cache
                 $cache = new FileCache($baseDir . "/cache/related/");
                 $cache->cleanUp();
+
+		// Cleanup the overall file cache
+		$fc = new FileCache();
+		$fc->cleanup();
+
 	}
 }
