@@ -2,4 +2,6 @@ User-agent: *
 Disallow: /api/*
 Disallow: */stats/
 Disallow: /kill/-*/
+Disallow: */page/*
+Disallow: */top/
 sitemap: https://zkillboard.com/sitemaps/sitemaps.xml
