@@ -28,7 +28,7 @@ class cli_parseKills implements cliCommand
 		return ""; // Space seperated list
 	}
 
-	public function ggetCronInfo()
+	public function getCronInfo()
 	{
 		return array(0 => ""); // Always run
 	}
