@@ -30,6 +30,7 @@ class cli_apiFetchKillLog implements cliCommand
 
 	public function execute($parameters, $db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		$mod = (int) $parameters[0];
 		$timer = new Timer();
 		$highKillID = Db::queryField("select max(killID) highKillID from zz_killmails", "highKillID", array(), 0);

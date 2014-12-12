@@ -54,6 +54,7 @@ class cli_crestapi implements cliCommand
 			if (count($crests) == 0) $crests = $db->query("select * from zz_crest_killmail where processed = 0 order by killID desc limit 1", array(), 0);
 			foreach ($crests as $crest) {
 				try {
+					if (Util::isMaintenanceMode()) return;
 					$now = $timer->stop();
 					$killID = $crest["killID"];
 					$hash = trim($crest["hash"]);

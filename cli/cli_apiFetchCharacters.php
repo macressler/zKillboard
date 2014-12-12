@@ -30,6 +30,7 @@ class cli_apiFetchCharacters implements cliCommand
 
 	public function execute($parameters, $db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		if (Util::is904Error()) return;
 		$keyID = (int) $parameters[0];
 		$vCode = $db->queryField("select vCode from zz_api where keyID = :keyID", "vCode", array(":keyID" => $keyID), 0);

@@ -40,6 +40,7 @@ class cli_populateCharacters implements cliCommand
 
 	private static function populateCharacters($db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		global $baseDir;
 
 		$timer = new Timer();
@@ -58,6 +59,7 @@ class cli_populateCharacters implements cliCommand
 			$keyIDs = $db->query("select distinct keyID from zz_api where errorCode not in (203, 220, 222) and lastValidation < date_sub(now(), interval 2 hour) order by lastValidation, dateAdded desc limit 100", array(), 0);
 
 			foreach($keyIDs as $row) {
+				if (Util::isMaintenanceMode()) return;
 				$keyID = $row["keyID"];
 				$m = $iterationCount % $fetchesPerSecond;
 				$db->execute("update zz_api set lastValidation = date_add(lastValidation, interval 5 minute) where keyID = :keyID", array(":keyID" => $keyID));

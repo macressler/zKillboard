@@ -28,13 +28,14 @@ class cli_parseKills implements cliCommand
 		return ""; // Space seperated list
 	}
 
-	public function getCronInfo()
+	public function ggetCronInfo()
 	{
 		return array(0 => ""); // Always run
 	}
 
 	public function execute($parameters, $db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		Parser::parseKills();
 	}
 }

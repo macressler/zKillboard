@@ -30,6 +30,7 @@ class cli_wars implements cliCommand
 
 	public function execute($parameters, $db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		$added = 0;
 		$timer = new Timer();
 		while ($timer->stop() < 65000)

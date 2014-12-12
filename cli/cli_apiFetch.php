@@ -35,6 +35,7 @@ class cli_apiFetch implements cliCommand
 
 	public function execute($parameters, $db)
 	{
+		if (Util::isMaintenanceMode()) return;
 		if (Util::is904Error()) return;
 		Api::fetchApis();
 	}
