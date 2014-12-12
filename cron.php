@@ -11,13 +11,6 @@ $base = __DIR__;
 require_once( "config.php" );
 require_once( "init.php" );
 
-// Don't run the cronjobs if maintenance mode is on.
-if (Util::isMaintenanceMode())
-{
-	Log::log("Maintenance Mode, cron will not run till it's over.");
-	die();
-}
-
 interface cliCommand {
 	/**
 	 * @return string
