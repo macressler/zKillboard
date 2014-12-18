@@ -25,7 +25,7 @@ if (strlen("$id") > 11) $app->redirect("/");
 
 if ($pageType == "history") $app->redirect("../stats/");
 
-$validPageTypes = array("overview", "kills", "losses", "solo", "stats", "wars", "supers");
+$validPageTypes = array("overview", "kills", "losses", "solo", "stats", "wars", "supers", "top");
 if ($key == "alliance")
 {
 	$validPageTypes[] = "api";
