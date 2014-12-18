@@ -26,13 +26,14 @@ if ($app->request()->isPost())
 
 //declare the base data/sql etc
 $entities = array(
-		array('type' => 'item',        'query' => 'SELECT typeID AS id, typeName AS name, groupID FROM ccp_invTypes WHERE published = 1 AND typeName LIKE :query LIMIT 9', 'image' => 'Type/%1$d_32.png'),
+		array('type' => 'ship',        'query' => 'select i.typeID as id, i.typeName as name from ccp_zship_search c left join ccp_invTypes i on (c.typeID = i.typeID) where i.typeName like :query', 'image' => 'Type/%1$d_32.png'),
 		array('type' => 'region',      'query' => 'SELECT regionID AS id, regionName AS name FROM ccp_regions WHERE regionName LIKE :query LIMIT 9',                       'image' => ''),
 		array('type' => 'system',      'query' => 'SELECT solarSystemID  AS id, solarSystemName AS name FROM ccp_systems WHERE solarSystemName LIKE :query LIMIT 9',       'image' => ''),
 		array('type' => 'faction',     'query' => 'SELECT factionID as id, name from ccp_zfactions where name like :query or ticker like :query limit 9','image' => 'Alliance/%1$d_32.png'),
 		array('type' => 'alliance',    'query' => 'SELECT allianceID AS id, name FROM zz_alliances WHERE name LIKE :query OR ticker LIKE :query LIMIT 9',                  'image' => 'Alliance/%1$d_32.png'),
 		array('type' => 'corporation', 'query' => 'SELECT corporationID AS id, name FROM zz_corporations WHERE name LIKE :query OR ticker LIKE :query LIMIT 9',            'image' => 'Corporation/%1$d_32.png'),
 		array('type' => 'character',   'query' => 'SELECT characterID AS id, name FROM zz_characters WHERE name LIKE :query LIMIT 9',                                      'image' => 'Character/%1$d_32.jpg'),
+		array('type' => 'item',        'query' => 'SELECT typeID AS id, typeName AS name, groupID FROM ccp_invTypes WHERE published = 1 AND typeName LIKE :query LIMIT 9', 'image' => 'Type/%1$d_32.png'),
 		);
 
 //define our array for the results
