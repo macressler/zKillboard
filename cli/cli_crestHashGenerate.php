@@ -49,8 +49,11 @@ class cli_crestHashGenerate implements cliCommand
 			{
 				if ($timer->stop() > 65000) return;
 				$killID = $row["killID"];
-				$hash = Killmail::getCrestHash($killID);
-				$db::execute("insert ignore into zz_crest_killmail (killID, hash) values (:killID, :hash)", array(":killID" => $killID, ":hash" => $hash));
+				if ($killID > 0)
+				{
+					$hash = Killmail::getCrestHash($killID);
+					$db::execute("insert ignore into zz_crest_killmail (killID, hash) values (:killID, :hash)", array(":killID" => $killID, ":hash" => $hash));
+				}
 				$db::execute("delete from zz_crest_queue where killID = :killID", array(":killID" => $killID));
 			}
 		}
