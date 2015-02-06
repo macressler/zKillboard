@@ -329,10 +329,17 @@ class Util
 
 		$uri = substr($_SERVER["REQUEST_URI"], 0, 256);
         	$ip = substr(IP::get(), 0, 64);
-        	Db::execute("insert into zz_scrape_prevention values (:ip, :uri, now())", array(":ip" => $ip, ":uri" => $uri));
 
 		if(!in_array($ip, $apiWhiteList))
 		{
+			// Did this IP already fetch this URI in the last hour?
+			$c = Db::queryField("select count(*) count from zz_scrape_prevention where ip = :ip and uri = :uri and dttm > date_sub(now(), interval 1 hour)", "count", array(":ip" => $ip, ":uri" => $uri), 0);
+			if ($c > 3)
+			{
+				header("HTTP/1.1 304 Not Modified");
+				die();
+			}
+
 			$count = Db::queryField("select count(*) count from zz_scrape_prevention where ip = :ip and dttm >= date_sub(now(), interval 1 hour)", "count", array(":ip" => $ip), 0);
 
 			if($count > $maxRequestsPerHour)
@@ -367,6 +374,7 @@ class Util
 			header("X-Bin-Request-Count: ". $count);
 			header("X-Bin-Max-Requests: ". $maxRequestsPerHour);
 		}
+        	Db::execute("insert into zz_scrape_prevention values (:ip, :uri, now())", array(":ip" => $ip, ":uri" => $uri));
 	}
 
 	public static function isValidCallback($subject)
