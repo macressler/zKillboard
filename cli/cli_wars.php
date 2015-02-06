@@ -28,6 +28,11 @@ class cli_wars implements cliCommand
 		return ""; // Space seperated list
 	}
 
+        public function getCronInfo()
+        {
+                return array(0 => "");
+        }
+
 	public function execute($parameters, $db)
 	{
 		if (Util::isMaintenanceMode()) return;
