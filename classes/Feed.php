@@ -34,7 +34,8 @@ class Feed
 		$userAgent = @$_SERVER["HTTP_USER_AGENT"];
 
 		if ($debug) Log::log("API Fetch: " . $_SERVER["REQUEST_URI"] . " (" . $ip . " / " . $userAgent . ")");
-		$parameters["limit"] = 200; // Always 200 -- Squizz
+		if (isset($parameters["limit"]) && $parameters["limit"] > 200) $parameters["limit"] = 200;
+		if (isset($parameters["page"])) $parameters["limit"] = 200;
 		$kills = Kills::getKills($parameters, true, false);
 
 		return self::getJSON($kills, $parameters);
