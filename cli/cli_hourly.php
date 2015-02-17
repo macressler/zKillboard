@@ -66,6 +66,9 @@ class cli_hourly implements cliCommand
 		$db->execute("insert ignore into zz_characters (characterID) select distinct characterID from zz_api_characters");
 		$db->execute("insert ignore into zz_corporations (corporationID) select distinct corporationID from zz_api_characters where corporationID > 0");
 
+		// Ensure ship search links to the ship itself
+		$db->execute("insert ignore into ccp_zship_search select distinct shipTypeID from zz_participants where shipTypeID != 0");
+
 		$fileCache = new FileCache();
 		$fileCache->cleanup();
 
