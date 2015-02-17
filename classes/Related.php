@@ -55,6 +55,9 @@ class Related
 		$blue = static::addInfo($blueTeam);	
 		asort($blue);
 
+		usort($redInvolved, "Related::compareShips");
+		usort($blueInvolved, "Related::compareShips");
+
 		$retValue = array(
 				"teamA" => array(
 					"list" => $redInvolved,
@@ -231,5 +234,12 @@ class Related
 			if (!isset($teamA[$id])) $teamA[] = $id;
 			if (($key = array_search($id, $teamB)) !== false) unset($teamB[$key]);
 		}
+	}
+
+	public static function compareShips($a, $b)
+	{
+		$aSize = Db::queryField("select mass from ccp_invTypes where typeID = :typeID", "mass", array(":typeID" => $a["shipTypeID"]));
+		$bSize = Db::queryField("select mass from ccp_invTypes where typeID = :typeID", "mass", array(":typeID" => $b["shipTypeID"]));
+		return $aSize < $bSize;
 	}
 }
