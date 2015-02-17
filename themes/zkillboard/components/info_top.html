@@ -66,7 +66,7 @@
 				<td itemprop="ship"><a href="/item/{{ detail.shipTypeID}}/">{{ detail.shipName }}</a></td>
 			</tr>
             {% endif %}
-            {% if detail.groupName %}
+            {% if detail.groupName and detail.groupName != "#System" %}
 			<tr>
 				<th>Class:</th>
 				<td itemprop="class"><a href="/group/{{ detail.groupID }}/">{{ detail.groupName }}</a></td>

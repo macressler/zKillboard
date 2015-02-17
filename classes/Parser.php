@@ -144,14 +144,20 @@ class Parser
 
 	private static function validKill(&$kill)
 	{
+		// Show all pod kills
+		$victimShipID = $kill["victim"]["shipTypeID"];
+		if ($victimShipID == 670 || $victimShipID == 33328) return true;
+
+		$npcOnly = true;
 		$victimCorp = $kill["victim"]["corporationID"] < 1000999 ? 0 : $kill["victim"]["corporationID"];
 		$victimAlli = $kill["victim"]["allianceID"];
 
-		$npcOnly = true;
 		$blueOnBlue = true;
 		foreach ($kill["attackers"] as $attacker) {
 			$attackerGroupID = Info::getGroupID($attacker["shipTypeID"]);
 			if ($attackerGroupID == 365) return true; // A tower is involved
+
+			if (isset($attacker["factionID"]) && $attacker["factionID"] == 500021) return true;
 
 			// Don't process the kill if it's NPC only
 			$npcOnly &= $attacker["characterID"] == 0 && ($attacker["corporationID"] < 1999999 && $attacker["corporationID"] != 1000125);
