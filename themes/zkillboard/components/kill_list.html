@@ -80,7 +80,12 @@
           {% endif %}
         </td>
         <td class="finalBlow hidden-xs" style="vertical-align: top;">
-          <a href="/character/{{ kill.finalBlow.characterID }}/">{{ kill.finalBlow.characterName }}</a> ({{ kill.info.number_involved }})<br />
+          <a href="/character/{{ kill.finalBlow.characterID }}/">{{ kill.finalBlow.characterName }}</a>
+          {% if field.characterID == 0 %}
+		{% set shipImageLinkOverride = 0 %}
+                {% include 'components/text_ship.html' %}
+          {% endif %}
+          ({{ kill.info.number_involved }})<br />
           <a href="/corporation/{{ kill.finalBlow.corporationID }}/">{{ shortString(kill.finalBlow.corporationName, txtLength) }}</a>
           {% if kill.finalBlow.allianceID != 0 %}
             / <a href="/alliance/{{ kill.finalBlow.allianceID }}/">{{ shortString(kill.finalBlow.allianceName, txtLength) }}</a>
