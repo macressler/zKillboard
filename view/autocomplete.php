@@ -43,7 +43,11 @@ $ids = array();
 //for each entity type, get any matches and process them
 foreach ($entities as $key => $entity)
 {
-	$results = Db::query($entity['query'], array(":query" => $query . '%'), 30); //see if we have any things that matches the thing
+	$results1 = Db::query($entity['query'], array(":query" => $query), 30); //see if we have any things that exactly matches the thing
+	$results2 = Db::query($entity['query'], array(":query" => $query . '%'), 30); //see if we have any things that matches the thing
+	$results = array_merge($results1, $results2);
+	if (sizeof($results) > 10) $results = array_slice($results, 0, 10);
+	
 
 	//merge the reults into an single array to throw back to the browser
 	foreach ($results as $result)
