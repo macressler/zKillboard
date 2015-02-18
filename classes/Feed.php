@@ -60,6 +60,7 @@ class Feed
 			$jsonText = Killmail::get($killID);
 			$json = json_decode($jsonText, true);
 			if (array_key_exists("no-items", $parameters)) unset($json["items"]);
+			if (isset($json["_stringValue"])) unset($json["_stringValue"]);
 			if (array_key_exists("finalblow-only", $parameters))
 			{
 				$involved = count($json["attackers"]);
