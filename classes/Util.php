@@ -242,6 +242,9 @@ class Util
 				case "pretty":
 					$parameters[$key] = true;
 				break;
+				case "no-items":
+					$parameters[$key] = true;
+				break;
 				default:
 					if($addExtraParameters == true)
 					{
