@@ -85,6 +85,9 @@
           {% if kill.finalBlow.allianceID != 0 %}
             / <a href="/alliance/{{ kill.finalBlow.allianceID }}/">{{ shortString(kill.finalBlow.allianceName, txtLength) }}</a>
           {% endif %}
+          {% if kill.finalBlow.factionID == 500021 %}
+            <a href="/faction/{{ kill.finalBlow.factionID }}/">Unknown</a>
+	  {% endif %}
         </td>
       </tr>
     {% endfor %}
