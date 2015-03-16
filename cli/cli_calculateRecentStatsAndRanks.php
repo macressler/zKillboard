@@ -44,22 +44,22 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 			case "all":
 				self::stats($db);
 				self::ranks($db);
-			break;
+				break;
 
 			case "ranks":
 				self::ranks($db);
-			break;
+				break;
 
 			case "stats":
 				self::stats($db);
-			break;
+				break;
 
 		}
 	}
 
 	private static function ranks($db)
 	{
-		CLI::out("|g|Ranks calculation started");
+		Log::irc("Recent ranks calculation started");
 		$db->execute("drop table if exists zz_ranks_temporary");
 		$db->execute("create table if not exists zz_ranks_temporary like zz_ranks_recent");
 		$db->execute("truncate zz_ranks_temporary");
@@ -68,7 +68,6 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 		$indexed = array();
 
 		foreach($types as $type) {
-			CLI::out("Calculating ranks for $type");
 			Log::log("Calcing ranks for $type");
 			$db->execute("truncate zz_ranks_temporary");
 			$exclude = $type == "corp" ? "and typeID > 1100000" : "";
@@ -105,7 +104,7 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 				foreach($dupRanks as $dupRank) {
 					$num = $dupRank["n"];
 					$newRank = $dupRank["r"];
-					CLI::out("|g|$type |r|$typeColumn |g|$num $rank |n|->|g| $newRank");
+					//CLI::out("|g|$type |r|$typeColumn |g|$num $rank |n|->|g| $newRank");
 					$db->execute("update zz_ranks_temporary set $rank = $newRank where $typeColumn = $num and type = '$type'");
 				}
 			}
@@ -120,26 +119,25 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 		}
 		$db->execute("drop table zz_ranks_temporary");
 		$db->execute("insert into zz_ranks_progress select date(now()), type, typeID, overallRank, 0 from zz_ranks_recent r where overallRank <= 100000 on duplicate key update recentRank = r.overallRank");
+		Log::irc("Recent ranks calculation finished");
 	}
 
 	private static function stats($db)
 	{
-		CLI::out("|g|Stats calculation started");
 		$db->execute("set session wait_timeout = 600");
 
 		// Fix unknown group ID's
-		echo "Updating groups...\n";
+
 		$result = $db->query("select distinct shipTypeID from zz_participants where groupID = 0 and shipTypeID != 0");
 		foreach ($result as $row) {
 			$shipTypeID = $row["shipTypeID"];
 			$groupID = Info::getGroupID($shipTypeID);
 			if ($groupID == null) $groupID = 0;
 			if ($groupID == 0) continue;
-			echo "Updating $shipTypeID to $groupID\n";
 			$db->execute("update zz_participants set groupID = $groupID where groupID = 0 and shipTypeID = $shipTypeID");
 		}
-		echo "Finished updating groups...\n";
 
+		Log::irc("Recent stats calculation started");
 		$db->execute("create table if not exists zz_stats_recent like zz_stats");
 		$db->execute("truncate zz_stats_recent");
 
@@ -155,6 +153,7 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 		} catch (Exception $e) {
 			print_r($e);
 		}
+		Log::irc("Finished recent stat calculations");
 	}
 
 	/**
@@ -163,36 +162,29 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 	 */
 	private static function recalc($type, $column, $calcKills = true, $db)
 	{
-			Log::log("Starting recent stat calculations for $type");
+		$db->execute("drop table if exists zz_stats_temporary");
+		$db->execute("
+				CREATE TABLE `zz_stats_temporary` (
+					`killID` int(16) NOT NULL,
+					`groupName` varchar(16) NOT NULL,
+					`groupNum` int(16) NOT NULL,
+					`groupID` int(16) NOT NULL,
+					`points` int(16) NOT NULL,
+					`price` decimal(16,2) NOT NULL,
+					PRIMARY KEY (`killID`,`groupName`,`groupNum`,`groupID`)
+					) ENGINE=InnoDB");
 
-			$db->execute("drop table if exists zz_stats_temporary");
-			$db->execute("
-					CREATE TABLE `zz_stats_temporary` (
-						`killID` int(16) NOT NULL,
-						`groupName` varchar(16) NOT NULL,
-						`groupNum` int(16) NOT NULL,
-						`groupID` int(16) NOT NULL,
-						`points` int(16) NOT NULL,
-						`price` decimal(16,2) NOT NULL,
-						PRIMARY KEY (`killID`,`groupName`,`groupNum`,`groupID`)
-						) ENGINE=InnoDB");
+		$exclude = "$column != 0";
 
-			$exclude = "$column != 0";
+		$db->execute("insert ignore into zz_stats_temporary select killID, '$type', $column, groupID, points, total_price from zz_participants where $exclude and isVictim = 1 and (vGroupID not in (31, 237, 29)) and dttm > date_sub(now(), interval 90 day) and characterID != 0");
+		$db->execute("insert into zz_stats_recent (type, typeID, groupID, lost, pointsLost, iskLost) select groupName, groupNum, groupID, count(killID), sum(points), sum(price) from zz_stats_temporary group by 1, 2, 3");
 
-			echo "$type losses ";
-			$db->execute("insert ignore into zz_stats_temporary select killID, '$type', $column, groupID, points, total_price from zz_participants where $exclude and isVictim = 1 and dttm > date_sub(now(), interval 90 day) and characterID != 0");
-			$db->execute("insert into zz_stats_recent (type, typeID, groupID, lost, pointsLost, iskLost) select groupName, groupNum, groupID, count(killID), sum(points), sum(price) from zz_stats_temporary group by 1, 2, 3");
+		if ($calcKills) {
+			$db->execute("truncate table zz_stats_temporary");
+			$db->execute("insert ignore into zz_stats_temporary select killID, '$type', $column, vGroupID, points, total_price from zz_participants where $exclude and isVictim = 0 and (vGroupID not in (31, 237, 29)) and dttm > date_sub(now(), interval 90 day) and characterID != 0");
+			$db->execute("insert into zz_stats_recent (type, typeID, groupID, destroyed, pointsDestroyed, iskDestroyed) (select groupName, groupNum, groupID, count(killID), sum(points), sum(price) from zz_stats_temporary group by 1, 2, 3) on duplicate key update destroyed = values(destroyed), pointsDestroyed = values(pointsDestroyed), iskDestroyed = values(iskDestroyed)");
+		}
 
-			if ($calcKills) {
-				echo " kills ";
-				$db->execute("truncate table zz_stats_temporary");
-				$db->execute("insert ignore into zz_stats_temporary select killID, '$type', $column, vGroupID, points, total_price from zz_participants where $exclude and isVictim = 0 and dttm > date_sub(now(), interval 90 day) and characterID != 0");
-				$db->execute("insert into zz_stats_recent (type, typeID, groupID, destroyed, pointsDestroyed, iskDestroyed) (select groupName, groupNum, groupID, count(killID), sum(points), sum(price) from zz_stats_temporary group by 1, 2, 3) on duplicate key update destroyed = values(destroyed), pointsDestroyed = values(pointsDestroyed), iskDestroyed = values(iskDestroyed)");
-			}
-
-			$db->execute("drop table if exists zz_stats_temporary");
-
-			echo "done!\n";
-			Log::log("Finished stat calculations for $type");
+		$db->execute("drop table if exists zz_stats_temporary");
 	}
 }
