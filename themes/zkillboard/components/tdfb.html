@@ -29,17 +29,17 @@
 			<td style="text-align: center;">
 			{% set field = finalBlow %}
 			{% if field.characterID != 0 %}
-				<a href="/character/{{ finalBlow.characterID }}/">{{ field.characterName }}</a>
+				<a class="info_final_blow" href="/character/{{ finalBlow.characterID }}/">{{ field.characterName }}</a>
 			{% else %}
-				<a href="/corporation/{{ finalBlow.corporationID }}/">{{ field.corporationName }}</a>
+				<a class="info_final_blow" href="/corporation/{{ finalBlow.corporationID }}/">{{ field.corporationName }}</a>
 			{% endif %}
 			</td>
 			<td style="text-align: center;">
 			{% set field = topDamage %}
 			{% if field.characterID != 0 %}
-				<a href="/character/{{ topDamage.characterID }}/">{{ field.characterName }}</a>
+				<a class="info_top_damage" href="/character/{{ topDamage.characterID }}/">{{ field.characterName }}</a>
 			{% else %}
-				<a href="/corporation/{{ topDamage.corporationID }}/">{{ field.corporationName }}</a>
+				<a class="info_top_damage" href="/corporation/{{ topDamage.corporationID }}/">{{ field.corporationName }}</a>
 			{% endif %}
 			</td>
 		</tr>
