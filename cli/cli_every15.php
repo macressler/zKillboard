@@ -37,7 +37,7 @@ class cli_every15 implements cliCommand
 	{
 		if (Util::isMaintenanceMode()) return;
 		$minute = date("i");
-                if ($minute % 15 != 0) return;
+                if (!in_array("-f", $parameters) && $minute != 15) return;
 
 		global $baseDir;
 
