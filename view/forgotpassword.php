@@ -25,7 +25,9 @@ if($_POST)
         if($exists != NULL)
         {
             $date = date("Y-m-d H:i:s", strtotime("+24 hours"));
-            $hash = sha1($date.$email);
+	    $salt = "";
+	    while (strlen($salt) < 60) $salt = $salt . rand(0,9);
+            $hash = sha1($date.$email.$salt);
 
             $alreadySent = Db::queryField("SELECT change_hash FROM zz_users WHERE email = :email", "change_hash", array(":email" => $email), 0);
             if($alreadySent != NULL)
