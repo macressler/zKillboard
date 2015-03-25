@@ -24,10 +24,9 @@ if($_POST)
         $exists = Db::queryField("SELECT username FROM zz_users WHERE email = :email", "username", array(":email" => $email), 0);
         if($exists != NULL)
         {
-            $date = date("Y-m-d H:i:s", strtotime("+24 hours"));
-	    $salt = "";
-	    while (strlen($salt) < 60) $salt = $salt . rand(0,9);
-            $hash = hash("sha256", $date.$email.$salt);
+            // Generate a random hash to use for the reset token
+            $random = new RandomGenerator();
+	    $hash = substr($random->randomToken(), 0, 32);
 
             $alreadySent = Db::queryField("SELECT change_hash FROM zz_users WHERE email = :email", "change_hash", array(":email" => $email), 0);
             if($alreadySent != NULL)
