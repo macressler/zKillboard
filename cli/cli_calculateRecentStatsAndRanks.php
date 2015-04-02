@@ -28,7 +28,7 @@ class cli_calculateRecentStatsAndRanks implements cliCommand
 		return "ranks stats all"; // Space seperated list
 	}
 
-	public function getCronInfo()
+	public function ggetCronInfo()
 	{
 		return array(0 => "all");
 	}
