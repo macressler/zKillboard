@@ -13,6 +13,5 @@ cache/sessions
 .tags_sorted_by_file
 atlassian-ide-plugin.xml
 .idea
-killmails
 sitemaps/
 cron.overrides
