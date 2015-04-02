@@ -157,6 +157,10 @@ class Price
 		static::setPrice(33675, 120000000000); // Chameleon
 		static::setPrice(33673, 100000000000); // Whiptail
 
+		// Rare CCP Ships (1 trillion! cuz why not)
+		static::setPrice(9860, 1000000000000); // Polaris
+		static::setPrice(11019, 1000000000000); // Cockroach
+
 		$rareCruisers = array( // Ships we should never see get blown up!
 				11940, // Gold Magnate
 				11942, // Silver Magnate
