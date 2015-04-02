@@ -180,6 +180,7 @@ class cli_calculateAllTimeStatsAndRanks implements cliCommand
 					) ENGINE=InnoDB");
 
 		$db->execute("insert ignore into zz_stats_temporary select killID, '$type', $column, groupID, points, total_price from zz_participants where $column != 0 and isVictim = 1 and characterID != 0");
+		$db->execute("delete from zz_stats where type = :type", array(":type" => $type));
 		$db->execute("replace into zz_stats (type, typeID, groupID, lost, pointsLost, iskLost) select groupName, groupNum, groupID, count(killID), sum(points), sum(price) from zz_stats_temporary group by 1, 2, 3");
 
 		if ($calcKills) {
