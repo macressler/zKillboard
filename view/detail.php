@@ -137,6 +137,7 @@ $details = array("pageview" => $pageview, "killdata" => $killdata, "extra" => $e
 Cache::set($killKey, $details);
 }
 
+header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + (24 * 3600)));
 $app->render("detail.html", $details);
 
 function involvedships($array)
