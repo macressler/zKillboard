@@ -50,8 +50,8 @@ class StompUtil
 				$stomp->send($destination, $json);
 			}
 			$data = json_decode($json, true);
-			$map = json_encode(array("solarSystemID" => $data["solarSystemID"], "killID" => $data["killID"], "characterID" => $data["victim"]["characterID"], "corporationID" => $data["victim"]["corporationID"], "allianceID" => $data["victim"]["allianceID"], "shipTypeID" => $data["victim"]["shipTypeID"], "killTime" => $data["killTime"], "involved" => count($data["attackers"]), "totalValue" => $data["zkb"]["totalValue"], "pointsPrInvolved" => $data["zkb"]["points"]));
-			$stomp->send("/topic/starmap.systems.active", $map);
+			//$map = json_encode(array("solarSystemID" => $data["solarSystemID"], "killID" => $data["killID"], "characterID" => $data["victim"]["characterID"], "corporationID" => $data["victim"]["corporationID"], "allianceID" => $data["victim"]["allianceID"], "shipTypeID" => $data["victim"]["shipTypeID"], "killTime" => $data["killTime"], "involved" => count($data["attackers"]), "totalValue" => $data["zkb"]["totalValue"], "pointsPrInvolved" => $data["zkb"]["points"]));
+			//$stomp->send("/topic/starmap.systems.active", $map);
 		}	
 	}
 
