@@ -36,6 +36,7 @@ class cli_statsQueue implements cliCommand
 	public function execute($parameters, $db)
 	{
 		if (Util::isMaintenanceMode()) return;
+		$maxID = Db::queryField("select max(killID) maxID from zz_killmails where processed = 1", "maxID", array(), 0);
 		$timer = new Timer();
 		while ($timer->stop() < 65000) {
 			$processedKills = $db->query("select killID from zz_stats_queue limit 100", array(), 0);
@@ -67,7 +68,7 @@ class cli_statsQueue implements cliCommand
 				$db->execute("delete from zz_stats_queue where killID = :killID", array(":killID" => $killID));
 				$db->execute("insert ignore into zz_crest_queue values (:killID)", array(":killID" => $killID));
 				Social::beSocial($killID);
-				if (class_exists("Stomp")) StompUtil::sendKill($killID);
+				if (class_exists("Stomp") && $killID > ($maxID - 500000)) StompUtil::sendKill($killID);
 			}
 		}
 	}
