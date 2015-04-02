@@ -100,12 +100,6 @@ class cli_wars implements cliCommand
 							":openForAllies" => $warInfo->openForAllies,
 							":warID" => $id,
 							));
-				$diff = $timer->stop() - $now;
-				if ($diff < 200)
-				{
-					$sleep = 200 - $diff;
-					usleep(1000 * $sleep);
-				}
 			}
 		}
 		if ($added > 0) Log::log("CREST (war): Added $added killmails");
